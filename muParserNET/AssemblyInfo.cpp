@@ -12,9 +12,9 @@ using namespace System::Security::Permissions;
 // associated with an assembly.
 //
 [assembly:AssemblyTitleAttribute(L"muParserNET")];
-[assembly:AssemblyDescriptionAttribute(L"")];
+[assembly:AssemblyDescriptionAttribute(L"muParser library .NET wrapper")];
 [assembly:AssemblyConfigurationAttribute(L"")];
-[assembly:AssemblyCompanyAttribute(L"Microsoft")];
+[assembly:AssemblyCompanyAttribute(L"Luiz Carlos Viana Melo")];
 [assembly:AssemblyProductAttribute(L"muParserNET")];
 [assembly:AssemblyCopyrightAttribute(L"Copyright (c) Microsoft 2015")];
 [assembly:AssemblyTrademarkAttribute(L"")];
