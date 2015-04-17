@@ -11,8 +11,10 @@ namespace muParserNET
 
 	public ref class Parser
 	{
-	//public:
+	public:
 	//	delegate ParserVariable ^FactoryFunction(String ^name, Object ^userData);
+		[UnmanagedFunctionPointerAttribute(CallingConvention::Cdecl)]
+		delegate bool IdentFunction(String ^remainingExpr, int %pos, double %value);
 	private:
 		mu::Parser *parser;
 
@@ -28,6 +30,12 @@ namespace muParserNET
 	//
 	//	void AllocFactoryObjects(FactoryFunction ^factoryFunc, Object ^userData);
 	//	void FreeFactoryObjects();
+	private:
+		// Atributos de apoio as funções de identificação
+		
+		// armazena os delegates para eles não serem deletados
+		List<GCHandle> ^identFunctionsPtrs;
+
 	public:
 		property String ^Expr
 		{
@@ -74,6 +82,8 @@ namespace muParserNET
 		void DefineConst(String ^name, double value);
 		void DefineStrConst(String ^name, String ^value);
 		void ClearConst();
+
+		void AddValIdent(IdentFunction ^identFunction);
 
 		//void SetVarFactory(FactoryFunction ^func, Object ^userData);
 

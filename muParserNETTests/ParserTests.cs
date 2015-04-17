@@ -115,5 +115,35 @@ namespace muParserNETTests
 
             Assert.AreEqual(50.0, res);
         }
+
+        [Test]
+        public void TestAddIdentFunc()
+        {
+            // cria o parser
+            Parser parser = new Parser();
+            parser.Expr = "a = #10";
+
+            // define a variável 'a'
+            ParserVariable a = parser.DefineVar("a", 0.0);
+
+            // adiciona a função de parser
+            parser.AddValIdent((string remainingExpr, ref int pos, ref double value) =>
+            {
+                // ignora o token se ele não comecar com '#'
+                if (remainingExpr[0] != '#')
+                    return false;
+
+                int n = int.Parse(remainingExpr);
+
+                value = n;
+
+                return true;
+            });
+
+            parser.Eval();
+
+            // verifica se fez o parser corretamente
+            Assert.AreEqual(10.0, a.Value);
+        }
     }
 }

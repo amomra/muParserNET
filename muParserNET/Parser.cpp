@@ -99,12 +99,19 @@ namespace muParserNET
 
 		// inicializa o dicionário com as variáveis
 		this->vars = gcnew Dictionary<String ^, ParserVariable ^>();
+
+		// inicializa a lista de delegates
+		this->identFunctionsPtrs = gcnew List<GCHandle>();
 	}
 
 	Parser::~Parser()
 	{
 		// libera os objetos do factory
 		//this->FreeFactoryObjects();
+
+		// libera os objetos dos delegates
+		for (int i = 0; i < this->identFunctionsPtrs->Count; i++)
+			this->identFunctionsPtrs[i].Free();
 
 		// finaliza o parser
 		delete this->parser;
@@ -194,6 +201,18 @@ namespace muParserNET
 	void Parser::ClearConst()
 	{
 		this->parser->ClearConst();
+	}
+
+	void Parser::AddValIdent(IdentFunction ^identFunction)
+	{
+		// bloqueia o GC de mover o delegate
+		GCHandle ptr = GCHandle::Alloc(identFunction);
+		IntPtr ip = Marshal::GetFunctionPointerForDelegate(identFunction);
+
+		// passa a chamada
+		this->parser->AddValIdent(static_cast<mu::identfun_type>(ip.ToPointer()));
+
+		this->identFunctionsPtrs->Add(ptr);
 	}
 
 	/* // DEIXAR POR ÚLTIMO!!!
