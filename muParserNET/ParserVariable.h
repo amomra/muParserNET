@@ -37,6 +37,7 @@ namespace muParserNET
 		}
 
 	public:
+		ParserVariable(String ^name);
 		ParserVariable(String ^name, double value);
 		ParserVariable(String ^name, array<double> ^valueArray);
 		~ParserVariable();

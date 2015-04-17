@@ -6,6 +6,21 @@
 
 namespace muParserNET
 {
+	/*
+	void Parser::AllocFactoryObjects(FactoryFunction ^factoryFunc, Object ^userData)
+	{
+		this->ptrFactoryFunction = GCHandle::Alloc(factoryFunc, GCHandleType::Pinned);
+		this->ptrUserData = GCHandle::Alloc(userData, GCHandleType::Pinned);
+	}
+
+	void Parser::FreeFactoryObjects()
+	{
+		if (this->ptrFactoryFunction.IsAllocated)
+			this->ptrFactoryFunction.Free();
+
+		if (this->ptrUserData.IsAllocated)
+			this->ptrUserData.Free();
+	}*/
 
 	String ^Parser::Expr::get()
 	{
@@ -64,6 +79,19 @@ namespace muParserNET
 		return this->vars;
 	}
 
+	IReadOnlyDictionary<String ^, double> ^Parser::Consts::get()
+	{
+		// converte o map do parser
+		const mu::valmap_type &consts = this->parser->GetConst();
+
+		Dictionary<String ^, double> ^res = gcnew Dictionary<String ^, double>();
+
+		for (mu::valmap_type::const_iterator i = consts.cbegin(); i != consts.end(); i++)
+			res->Add(gcnew String(i->first.c_str()), i->second);
+
+		return res;
+	}
+
 	Parser::Parser()
 	{
 		// inicializa o parser
@@ -75,6 +103,9 @@ namespace muParserNET
 
 	Parser::~Parser()
 	{
+		// libera os objetos do factory
+		//this->FreeFactoryObjects();
+
 		// finaliza o parser
 		delete this->parser;
 	}
@@ -144,6 +175,45 @@ namespace muParserNET
 		this->parser->ClearVar();
 		this->vars->Clear();
 	}
+
+	void Parser::DefineConst(String ^name, double value)
+	{
+		mu::string_type strName = msclr::interop::marshal_as<mu::string_type>(name);
+
+		this->parser->DefineConst(strName, value);
+	}
+
+	void Parser::DefineStrConst(String ^name, String ^value)
+	{
+		mu::string_type strName = msclr::interop::marshal_as<mu::string_type>(name);
+		mu::string_type strValue = msclr::interop::marshal_as<mu::string_type>(value);
+
+		this->parser->DefineStrConst(strName, strValue);
+	}
+
+	void Parser::ClearConst()
+	{
+		this->parser->ClearConst();
+	}
+
+	/* // DEIXAR POR ÚLTIMO!!!
+
+	double *__VariableFactoryCallback(const mu::char_type *a_szName, void *pUserData)
+	{
+
+	}
+
+	void Parser::SetVarFactory(FactoryFunction ^func, Object ^userData)
+	{
+		// libera os objetos anterior
+		this->FreeFactoryObjects();
+
+		// ajusta e bloqueia o GC de mover os objetos do delegate e userdata
+		this->AllocFactoryObjects(func, userData);
+
+		this->parser->SetVarFactory(__VariableFactoryCallback, this->ptrUserData);
+	}
+	*/
 
 	double Parser::Eval()
 	{

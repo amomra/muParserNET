@@ -33,6 +33,16 @@ namespace muParserNET
 		return IntPtr(ptr);
 	}
 
+	ParserVariable::ParserVariable(String ^name)
+		: name(name)
+	{
+		this->valueArray = gcnew array<double>(1);
+		this->valueArray[0] = 0.0;
+
+		// evita que o objeto do array seja movido
+		this->ptrValueArray = GCHandle::Alloc(this->valueArray, GCHandleType::Pinned);
+	}
+
 	ParserVariable::ParserVariable(String ^name, double value)
 		: name(name)
 	{

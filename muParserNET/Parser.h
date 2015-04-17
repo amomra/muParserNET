@@ -11,11 +11,23 @@ namespace muParserNET
 
 	public ref class Parser
 	{
+	//public:
+	//	delegate ParserVariable ^FactoryFunction(String ^name, Object ^userData);
 	private:
 		mu::Parser *parser;
 
 		// hashmap com as variáveis
 		Dictionary<String ^, ParserVariable ^> ^vars;
+
+	private:
+		// Atributos de apoio ao factory de variáveis
+
+		// os objetos do delegate e userData não podem ser movidos pelo GC
+	//	GCHandle ptrFactoryFunction;
+	//	GCHandle ptrUserData;
+	//
+	//	void AllocFactoryObjects(FactoryFunction ^factoryFunc, Object ^userData);
+	//	void FreeFactoryObjects();
 	public:
 		property String ^Expr
 		{
@@ -46,6 +58,10 @@ namespace muParserNET
 			IReadOnlyDictionary<String ^, ParserVariable ^> ^get();
 		}
 
+		property IReadOnlyDictionary<String ^, double> ^Consts
+		{
+			IReadOnlyDictionary<String ^, double> ^get();
+		}
 	public:
 		Parser();
 		virtual ~Parser();
@@ -54,6 +70,12 @@ namespace muParserNET
 		ParserVariable ^DefineVar(String ^name, array<double> ^var);
 		void RemoveVar(String ^name);
 		void ClearVar();
+
+		void DefineConst(String ^name, double value);
+		void DefineStrConst(String ^name, String ^value);
+		void ClearConst();
+
+		//void SetVarFactory(FactoryFunction ^func, Object ^userData);
 
 		double Eval();
 		array<double> ^EvalBulk(int bulkSize);
