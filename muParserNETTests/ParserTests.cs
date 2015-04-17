@@ -1,13 +1,13 @@
 ﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using muParserNET;
+using NUnit.Framework;
 
 namespace muParserNETTests
 {
-    [TestClass]
+    [TestFixture]
     public class ParserTests
     {
-        [TestMethod]
+        [Test]
         public void TestExpr()
         {
             // cria o parser e tenta ajustar a expressão
@@ -16,6 +16,27 @@ namespace muParserNETTests
 
             // verifica se a expressão foi ajustada (remove qualquer espaço desnecessário gerado)
             Assert.AreEqual("a + b", parser.Expr.Trim());
+        }
+
+        [Test]
+        public void TestParserError()
+        {
+            try
+            {
+                // cria o parser e tenta ajustar uma expressão errada
+                Parser parser = new Parser();
+                parser.Expr = "aaaaaaaaasdasd;~";
+
+                parser.Eval();
+
+                // se passou para cá significa que não ocorreu erro de parser
+                Assert.Fail();
+            }
+            catch (ParserError e)
+            {
+                // significa que capturou a exceção correta
+                Console.WriteLine(e.Message);
+            }
         }
     }
 }

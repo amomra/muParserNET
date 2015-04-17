@@ -11,15 +11,17 @@ namespace muParserNET
 	private:
 		mu::Parser *parser;
 	public:
-		property String^ Expr
+		property String ^Expr
 		{
-			String^ get();
-			void set(String^ value);
+			String ^get();
+			void set(String ^value);
 		}
 
 	public:
 		Parser();
 		virtual ~Parser();
+
+		double Eval();
 	};
 
 }
