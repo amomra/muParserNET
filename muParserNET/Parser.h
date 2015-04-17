@@ -1,6 +1,9 @@
 #pragma once
 
+#include "ParserVariable.h"
+
 using namespace System;
+using namespace System::Collections::Generic;
 using namespace System::Runtime::InteropServices;
 
 namespace muParserNET
@@ -10,6 +13,9 @@ namespace muParserNET
 	{
 	private:
 		mu::Parser *parser;
+
+		// hashmap com as variáveis
+		Dictionary<String ^, ParserVariable ^> ^vars;
 	public:
 		property String ^Expr
 		{
@@ -39,8 +45,8 @@ namespace muParserNET
 		Parser();
 		virtual ~Parser();
 
-		void DefineVar(String ^name, double %var);
-		void DefineVar(String ^name, array<double> ^var);
+		ParserVariable ^DefineVar(String ^name, double var);
+		ParserVariable ^DefineVar(String ^name, array<double> ^var);
 
 		double Eval();
 		array<double> ^EvalBulk(int bulkSize);

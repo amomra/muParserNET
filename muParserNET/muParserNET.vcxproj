@@ -139,6 +139,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ParserVariable.h" />
     <ClInclude Include="ErrorCodes.h" />
     <ClInclude Include="Parser.h" />
     <ClInclude Include="ParserError.h" />
@@ -146,6 +147,7 @@
     <ClInclude Include="Stdafx.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="ParserVariable.cpp" />
     <ClCompile Include="AssemblyInfo.cpp" />
     <ClCompile Include="Parser.cpp" />
     <ClCompile Include="ParserError.cpp" />

@@ -59,6 +59,9 @@ namespace muParserNET
 	{
 		// inicializa o parser
 		this->parser = new mu::Parser();
+
+		// inicializa o dicionário com as variáveis
+		this->vars = gcnew Dictionary<String ^, ParserVariable ^>();
 	}
 
 	Parser::~Parser()
@@ -67,17 +70,33 @@ namespace muParserNET
 		delete this->parser;
 	}
 
-	void Parser::DefineVar(String ^name, double %var)
+	ParserVariable ^Parser::DefineVar(String ^name, double var)
 	{
 		try
 		{
-			mu::string_type strName = msclr::interop::marshal_as<mu::string_type>(name);
+			/*
+			 * Apenas atualiza o valor da variável se ela já estiver definida.
+			 */
+			ParserVariable ^parserVar = nullptr;
 
-			// converte o ponteiro
-			pin_ptr<double> ptrVar = &var;
+			if (this->vars->ContainsKey(name))
+			{
+				parserVar = this->vars[name];
+				parserVar->Value = var;
+			}
+			else
+			{
+				// cria e ajusta a variável no muParser
+				parserVar = gcnew ParserVariable(name, var);
 
-			// ajusta a variável
-			this->parser->DefineVar(strName, ptrVar);
+
+				mu::string_type strName = msclr::interop::marshal_as<mu::string_type>(name);
+
+				// ajusta a variável
+				this->parser->DefineVar(strName, (double *)parserVar->Pointer.ToPointer());
+			}
+
+			return parserVar;
 		}
 		catch (mu::Parser::exception_type &e)
 		{
@@ -86,17 +105,25 @@ namespace muParserNET
 		}
 	}
 
-	void Parser::DefineVar(String ^name, array<double> ^var)
+	ParserVariable ^Parser::DefineVar(String ^name, array<double> ^var)
 	{
 		try
 		{
+			/*
+			 * Diferente do método que define uma variável com apenas um valor,
+			 * este método envolve em modificar o array referenciado por este
+			 * objeto, o que faria com que o ponteiro fornecido ao muParser
+			 * anteriormente seja invalidado. Para evitar problemas, a variável
+			 * será recriada.
+			 */
+			ParserVariable ^parserVar = gcnew ParserVariable(name, var);
+
 			mu::string_type strName = msclr::interop::marshal_as<mu::string_type>(name);
 
-			// converte o ponteiro
-			pin_ptr<double> ptrVar = &var[0];
-
 			// ajusta a variável
-			this->parser->DefineVar(strName, ptrVar);
+			this->parser->DefineVar(strName, (double *)parserVar->Pointer.ToPointer());
+
+			return parserVar;
 		}
 		catch (mu::Parser::exception_type &e)
 		{

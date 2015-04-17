@@ -101,8 +101,7 @@ namespace muParserNETTests
             parser.Expr = "a";
 
             // define a variável 'a'
-            double a = 10.0;
-            parser.DefineVar("a", ref a);
+            ParserVariable a = parser.DefineVar("a", 10.0);
 
             // calcula
             double res = parser.Eval();
@@ -110,7 +109,7 @@ namespace muParserNETTests
             Assert.AreEqual(10.0, res);
 
             // muda o valor e testa denovo
-            a = 50.0;
+            a.Value = 50.0;
 
             res = parser.Eval();
 

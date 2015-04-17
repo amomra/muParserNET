@@ -4,8 +4,6 @@
 
 #pragma once
 
-#include <cstdlib>
-
 #include <msclr/marshal_cppstd.h>
 
 #include <muParser.h>
