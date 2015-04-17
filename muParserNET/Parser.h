@@ -41,9 +41,9 @@ namespace muParserNET
 			void set(String ^value);
 		}
 
-		property Dictionary<String ^, ParserVariable ^> ^Vars
+		property IReadOnlyDictionary<String ^, ParserVariable ^> ^Vars
 		{
-			Dictionary<String ^, ParserVariable ^> ^get();
+			IReadOnlyDictionary<String ^, ParserVariable ^> ^get();
 		}
 
 	public:
@@ -52,6 +52,8 @@ namespace muParserNET
 
 		ParserVariable ^DefineVar(String ^name, double var);
 		ParserVariable ^DefineVar(String ^name, array<double> ^var);
+		void RemoveVar(String ^name);
+		void ClearVar();
 
 		double Eval();
 		array<double> ^EvalBulk(int bulkSize);

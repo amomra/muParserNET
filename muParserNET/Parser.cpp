@@ -55,8 +55,12 @@ namespace muParserNET
 		this->parser->DefineInfixOprtChars(str.c_str());
 	}
 
-	Dictionary<String ^, ParserVariable ^> ^Parser::Vars::get()
+	IReadOnlyDictionary<String ^, ParserVariable ^> ^Parser::Vars::get()
 	{
+		/*
+		 * A princípio não é para ter variáveis a mais no parser do que tem
+		 * nesta lista.
+		 */
 		return this->vars;
 	}
 
@@ -79,50 +83,7 @@ namespace muParserNET
 	{
 		try
 		{
-			/*
-			 * Apenas atualiza o valor da variável se ela já estiver definida.
-			 */
-			ParserVariable ^parserVar = nullptr;
-
-			if (this->vars->ContainsKey(name))
-			{
-				parserVar = this->vars[name];
-				parserVar->Value = var;
-			}
-			else
-			{
-				// cria e ajusta a variável no muParser
-				parserVar = gcnew ParserVariable(name, var);
-
-				mu::string_type strName = msclr::interop::marshal_as<mu::string_type>(name);
-
-				// ajusta a variável
-				this->parser->DefineVar(strName, (double *)parserVar->Pointer.ToPointer());
-
-				// adiciona a variável na lista de variáveis
-				this->vars[name] = parserVar;
-			}
-
-			return parserVar;
-		}
-		catch (mu::Parser::exception_type &e)
-		{
-			// lança a exceção do .NET
-			throw gcnew ParserError(e);
-		}
-	}
-
-	ParserVariable ^Parser::DefineVar(String ^name, array<double> ^var)
-	{
-		try
-		{
-			/*
-			 * Diferente do método que define uma variável com apenas um valor,
-			 * este método envolve em modificar o array referenciado por este
-			 * objeto, o que faria com que o ponteiro fornecido ao muParser
-			 * anteriormente seja invalidado. Para evitar problemas, a variável
-			 * será recriada.
-			 */
+			// cria a variável
 			ParserVariable ^parserVar = gcnew ParserVariable(name, var);
 
 			mu::string_type strName = msclr::interop::marshal_as<mu::string_type>(name);
@@ -140,6 +101,48 @@ namespace muParserNET
 			// lança a exceção do .NET
 			throw gcnew ParserError(e);
 		}
+	}
+
+	ParserVariable ^Parser::DefineVar(String ^name, array<double> ^var)
+	{
+		try
+		{
+			// recria a variável
+			ParserVariable ^parserVar = gcnew ParserVariable(name, var);
+
+			mu::string_type strName = msclr::interop::marshal_as<mu::string_type>(name);
+
+			// ajusta a variável
+			this->parser->DefineVar(strName, (double *)parserVar->Pointer.ToPointer());
+
+			// adiciona a variável na lista de variáveis
+			this->vars[name] = parserVar;
+
+			return parserVar;
+		}
+		catch (mu::Parser::exception_type &e)
+		{
+			// lança a exceção do .NET
+			throw gcnew ParserError(e);
+		}
+	}
+
+	void Parser::RemoveVar(String ^name)
+	{
+		mu::string_type strName = msclr::interop::marshal_as<mu::string_type>(name);
+
+		// remove a variável
+		this->parser->RemoveVar(strName);
+
+		// e remove a variável da lista interna
+		this->vars->Remove(name);
+	}
+
+	void Parser::ClearVar()
+	{
+		// remove todas as variáveis
+		this->parser->ClearVar();
+		this->vars->Clear();
 	}
 
 	double Parser::Eval()
@@ -162,7 +165,7 @@ namespace muParserNET
 			// aloca o vetor de resposta
 			array<double> ^result = gcnew array<double>(bulkSize);
 
-			// pega o ponteiro
+			// pega o ponteiro (e evita do GC mover o objeto enquanto a função estiver em execução)
 			pin_ptr<double> ptrResult = &result[0];
 
 			// executa o comando

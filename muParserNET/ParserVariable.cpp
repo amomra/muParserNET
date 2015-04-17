@@ -38,16 +38,23 @@ namespace muParserNET
 	{
 		this->valueArray = gcnew array<double>(1);
 		this->valueArray[0] = value;
+
+		// evita que o objeto do array seja movido
+		this->ptrValueArray = GCHandle::Alloc(this->valueArray, GCHandleType::Pinned);
 	}
 
 	ParserVariable::ParserVariable(String ^name, array<double> ^valueArray)
 		: name(name)
 		, valueArray(valueArray)
 	{
+		// evita que o objeto do array seja movido
+		this->ptrValueArray = GCHandle::Alloc(this->valueArray, GCHandleType::Pinned);
 	}
 
 	ParserVariable::~ParserVariable()
 	{
+		// libera o vetor
+		this->ptrValueArray.Free();
 	}
 
 }
