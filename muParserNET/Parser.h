@@ -17,6 +17,24 @@ namespace muParserNET
 			void set(String ^value);
 		}
 
+		property String ^NameChars
+		{
+			String ^get();
+			void set(String ^value);
+		}
+
+		property String ^OprtChars
+		{
+			String ^get();
+			void set(String ^value);
+		}
+
+		property String ^InfixOprtChars
+		{
+			String ^get();
+			void set(String ^value);
+		}
+
 	public:
 		Parser();
 		virtual ~Parser();

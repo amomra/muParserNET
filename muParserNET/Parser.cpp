@@ -19,6 +19,42 @@ namespace muParserNET
 		this->parser->SetExpr(str);
 	}
 
+	String ^Parser::NameChars::get()
+	{
+		return gcnew String(this->parser->ValidNameChars());
+	}
+
+	void Parser::NameChars::set(String ^value)
+	{
+		// converte para o tipo string da std para ajustar no parser
+		mu::string_type str = msclr::interop::marshal_as<mu::string_type>(value);
+		this->parser->DefineNameChars(str.c_str());
+	}
+
+	String ^Parser::OprtChars::get()
+	{
+		return gcnew String(this->parser->ValidOprtChars());
+	}
+
+	void Parser::OprtChars::set(String ^value)
+	{
+		// converte para o tipo string da std para ajustar no parser
+		mu::string_type str = msclr::interop::marshal_as<mu::string_type>(value);
+		this->parser->DefineOprtChars(str.c_str());
+	}
+
+	String ^Parser::InfixOprtChars::get()
+	{
+		return gcnew String(this->parser->ValidInfixOprtChars());
+	}
+
+	void Parser::InfixOprtChars::set(String ^value)
+	{
+		// converte para o tipo string da std para ajustar no parser
+		mu::string_type str = msclr::interop::marshal_as<mu::string_type>(value);
+		this->parser->DefineInfixOprtChars(str.c_str());
+	}
+
 	Parser::Parser()
 	{
 		// inicializa o parser
