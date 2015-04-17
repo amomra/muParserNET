@@ -22,6 +22,7 @@ namespace muParserNET
 		virtual ~Parser();
 
 		double Eval();
+		array<double> ^EvalMulti();
 	};
 
 }

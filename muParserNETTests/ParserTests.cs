@@ -51,5 +51,22 @@ namespace muParserNETTests
 
             Assert.AreEqual(12.0, res);
         }
+
+        [Test]
+        public void TestEvalMulti()
+        {
+            // cria o parser e tenta ajustar a expressão com múltiplas formulas
+            Parser parser = new Parser();
+            parser.Expr = "2 + 10, 3 + 5";
+
+            double[] res = parser.EvalMulti();
+
+            // verifica se a quantidade de resultados está correta
+            Assert.AreEqual(2, res.Length);
+
+            // verifica se o resultado está correto
+            Assert.AreEqual(12.0, res[0]);
+            Assert.AreEqual(8.0, res[1]);
+        }
     }
 }
