@@ -67,6 +67,25 @@ namespace muParserNET
 		delete this->parser;
 	}
 
+	void Parser::DefineVar(String ^name, double %var)
+	{
+		try
+		{
+			mu::string_type strName = msclr::interop::marshal_as<mu::string_type>(name);
+
+			// converte o ponteiro
+			pin_ptr<double> ptrVar = &var;
+
+			// ajusta a variável
+			this->parser->DefineVar(strName, ptrVar);
+		}
+		catch (mu::Parser::exception_type &e)
+		{
+			// lança a exceção do .NET
+			throw gcnew ParserError(e);
+		}
+	}
+
 	double Parser::Eval()
 	{
 		try
