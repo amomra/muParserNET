@@ -38,5 +38,18 @@ namespace muParserNETTests
                 Console.WriteLine(e.Message);
             }
         }
+
+        [Test]
+        public void TestEval()
+        {
+            // cria o parser e tenta ajustar a expressão
+            Parser parser = new Parser();
+            parser.Expr = "2 + 10";
+
+            // faz o cálculo
+            double res = parser.Eval();
+
+            Assert.AreEqual(12.0, res);
+        }
     }
 }
