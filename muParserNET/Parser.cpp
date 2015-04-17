@@ -55,6 +55,11 @@ namespace muParserNET
 		this->parser->DefineInfixOprtChars(str.c_str());
 	}
 
+	Dictionary<String ^, ParserVariable ^> ^Parser::Vars::get()
+	{
+		return this->vars;
+	}
+
 	Parser::Parser()
 	{
 		// inicializa o parser
@@ -89,11 +94,13 @@ namespace muParserNET
 				// cria e ajusta a variável no muParser
 				parserVar = gcnew ParserVariable(name, var);
 
-
 				mu::string_type strName = msclr::interop::marshal_as<mu::string_type>(name);
 
 				// ajusta a variável
 				this->parser->DefineVar(strName, (double *)parserVar->Pointer.ToPointer());
+
+				// adiciona a variável na lista de variáveis
+				this->vars[name] = parserVar;
 			}
 
 			return parserVar;
@@ -122,6 +129,9 @@ namespace muParserNET
 
 			// ajusta a variável
 			this->parser->DefineVar(strName, (double *)parserVar->Pointer.ToPointer());
+
+			// adiciona a variável na lista de variáveis
+			this->vars[name] = parserVar;
 
 			return parserVar;
 		}

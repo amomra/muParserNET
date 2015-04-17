@@ -41,6 +41,11 @@ namespace muParserNET
 			void set(String ^value);
 		}
 
+		property Dictionary<String ^, ParserVariable ^> ^Vars
+		{
+			Dictionary<String ^, ParserVariable ^> ^get();
+		}
+
 	public:
 		Parser();
 		virtual ~Parser();
