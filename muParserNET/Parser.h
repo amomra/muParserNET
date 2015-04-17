@@ -40,8 +40,10 @@ namespace muParserNET
 		virtual ~Parser();
 
 		void DefineVar(String ^name, double %var);
+		void DefineVar(String ^name, array<double> ^var);
 
 		double Eval();
+		array<double> ^EvalBulk(int bulkSize);
 		array<double> ^EvalMulti();
 	};
 

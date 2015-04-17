@@ -69,6 +69,30 @@ namespace muParserNETTests
             Assert.AreEqual(8.0, res[1]);
         }
 
+
+        [Test]
+        public void TestEvalBulk()
+        {
+            Parser parser = new Parser();
+            parser.Expr = "a + b";
+
+            // cria as variáveis
+            double[] a = new double[] { 1, 2, 3 };
+            double[] b = new double[] { 3, 2, 1 };
+
+            parser.DefineVar("a", a);
+            parser.DefineVar("b", b);
+
+            // faz o cálculo
+            double[] res = parser.EvalBulk(3);
+
+            // verifica se calculou corretamente
+            Assert.AreEqual(3, res.Length);
+
+            foreach (var r in res)
+                Assert.AreEqual(4, r);
+        }
+
         [Test]
         public void TestDefineVar()
         {

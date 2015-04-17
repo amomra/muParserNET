@@ -86,11 +86,52 @@ namespace muParserNET
 		}
 	}
 
+	void Parser::DefineVar(String ^name, array<double> ^var)
+	{
+		try
+		{
+			mu::string_type strName = msclr::interop::marshal_as<mu::string_type>(name);
+
+			// converte o ponteiro
+			pin_ptr<double> ptrVar = &var[0];
+
+			// ajusta a variável
+			this->parser->DefineVar(strName, ptrVar);
+		}
+		catch (mu::Parser::exception_type &e)
+		{
+			// lança a exceção do .NET
+			throw gcnew ParserError(e);
+		}
+	}
+
 	double Parser::Eval()
 	{
 		try
 		{
 			return this->parser->Eval();
+		}
+		catch (mu::Parser::exception_type &e)
+		{
+			// lança a exceção do .NET
+			throw gcnew ParserError(e);
+		}
+	}
+
+	array<double> ^Parser::EvalBulk(int bulkSize)
+	{
+		try
+		{
+			// aloca o vetor de resposta
+			array<double> ^result = gcnew array<double>(bulkSize);
+
+			// pega o ponteiro
+			pin_ptr<double> ptrResult = &result[0];
+
+			// executa o comando
+			this->parser->Eval(ptrResult, bulkSize);
+
+			return result;
 		}
 		catch (mu::Parser::exception_type &e)
 		{
