@@ -100,6 +100,11 @@ namespace muParserNET
 		{
 			IReadOnlyDictionary<String ^, double> ^get();
 		}
+
+		property IReadOnlyDictionary<String ^, ParserCallback ^> ^Functions
+		{
+			IReadOnlyDictionary<String ^, ParserCallback ^> ^get();
+		}
 	public:
 		Parser();
 		virtual ~Parser();
@@ -144,6 +149,8 @@ namespace muParserNET
 		void DefineFun(String ^name, StrFunType1 ^func, bool allowOpt);
 		void DefineFun(String ^name, StrFunType2 ^func, bool allowOpt);
 		void DefineFun(String ^name, StrFunType3 ^func, bool allowOpt);
+
+		void ClearFun();
 
 		//void SetVarFactory(FactoryFunction ^func, Object ^userData);
 

@@ -153,5 +153,26 @@ namespace muParserNETTests
             // verifica se fez o parser corretamente
             Assert.AreEqual(10.0, res);
         }
+
+        [Test]
+        public void TestDefineFun()
+        {
+            // cria o parser
+            Parser parser = new Parser();
+            parser.Expr = "testeFun(2)";
+
+            // cria a função
+            parser.DefineFun("testeFun", arg =>
+            {
+                return arg + 10;
+            },
+            false);
+
+            // executa
+            double res = parser.Eval();
+
+            // verifica se a função foi executada
+            Assert.AreEqual(12.0, res);
+        }
     }
 }

@@ -90,6 +90,11 @@ namespace muParserNET
 		return res;
 	}
 
+	IReadOnlyDictionary<String ^, ParserCallback ^> ^Parser::Functions::get()
+	{
+		return this->funcCallbacks;
+	}
+
 	Parser::Parser()
 	{
 		// inicializa o parser
@@ -213,6 +218,12 @@ namespace muParserNET
 		this->parser->AddValIdent(static_cast<mu::identfun_type>(callback->Pointer.ToPointer()));
 
 		this->identFunctionsCallbacks->Add(callback);
+	}
+
+	void Parser::ClearFun()
+	{
+		this->parser->ClearFun();
+		this->funcCallbacks->Clear();
 	}
 
 	/* // DEIXAR POR ÚLTIMO!!!
