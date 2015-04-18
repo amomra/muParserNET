@@ -2,8 +2,6 @@
 
 #include "Parser.h"
 
-#include "ParserError.h"
-
 namespace muParserNET
 {
 	/*
@@ -100,8 +98,9 @@ namespace muParserNET
 		// inicializa o dicionário com as variáveis
 		this->vars = gcnew Dictionary<String ^, ParserVariable ^>();
 
-		// inicializa a lista de delegates
-		this->identFunctionsPtrs = gcnew List<GCHandle>();
+		// inicializa as listas de delegates
+		this->identFunctionsCallbacks = gcnew List<ParserCallback ^>();
+		this->funcCallbacks = gcnew Dictionary<String ^, ParserCallback ^>();
 	}
 
 	Parser::~Parser()
@@ -110,8 +109,10 @@ namespace muParserNET
 		//this->FreeFactoryObjects();
 
 		// libera os objetos dos delegates
-		for (int i = 0; i < this->identFunctionsPtrs->Count; i++)
-			this->identFunctionsPtrs[i].Free();
+		for (int i = 0; i < this->identFunctionsCallbacks->Count; i++)
+			delete this->identFunctionsCallbacks[i];
+		for each (KeyValuePair<String ^, ParserCallback ^> funcCallback in this->funcCallbacks)
+			delete funcCallback.Value;
 
 		// finaliza o parser
 		delete this->parser;
@@ -206,13 +207,12 @@ namespace muParserNET
 	void Parser::AddValIdent(IdentFunction ^identFunction)
 	{
 		// bloqueia o GC de mover o delegate
-		GCHandle ptr = GCHandle::Alloc(identFunction);
-		IntPtr ip = Marshal::GetFunctionPointerForDelegate(identFunction);
+		ParserCallback ^callback = gcnew ParserCallback(identFunction);
 
 		// passa a chamada
-		this->parser->AddValIdent(static_cast<mu::identfun_type>(ip.ToPointer()));
+		this->parser->AddValIdent(static_cast<mu::identfun_type>(callback->Pointer.ToPointer()));
 
-		this->identFunctionsPtrs->Add(ptr);
+		this->identFunctionsCallbacks->Add(callback);
 	}
 
 	/* // DEIXAR POR ÚLTIMO!!!

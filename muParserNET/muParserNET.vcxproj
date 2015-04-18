@@ -139,6 +139,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Functions.h" />
+    <ClInclude Include="ParserCallback.h" />
     <ClInclude Include="ParserVariable.h" />
     <ClInclude Include="ErrorCodes.h" />
     <ClInclude Include="Parser.h" />
@@ -147,10 +149,13 @@
     <ClInclude Include="Stdafx.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Functions.cpp" />
+    <ClCompile Include="ParserCallback.cpp" />
     <ClCompile Include="ParserVariable.cpp" />
     <ClCompile Include="AssemblyInfo.cpp" />
     <ClCompile Include="Parser.cpp" />
     <ClCompile Include="ParserError.cpp" />
+    <ClCompile Include="Parser_Func.cpp" />
     <ClCompile Include="Stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
