@@ -13,8 +13,8 @@ namespace muParserNET
 	{
 	public:
 	//	delegate ParserVariable ^FactoryFunction(String ^name, Object ^userData);
-		[UnmanagedFunctionPointerAttribute(CallingConvention::Cdecl)]
-		delegate bool IdentFunction(String ^remainingExpr, int %pos, double %value);
+		[UnmanagedFunctionPointer(CallingConvention::Cdecl)]
+		delegate bool IdentFunction([MarshalAs(UnmanagedType::LPWStr)] String ^remainingExpr, int %pos, double %value);
 	private:
 		mu::Parser *parser;
 

@@ -121,29 +121,37 @@ namespace muParserNETTests
         {
             // cria o parser
             Parser parser = new Parser();
-            parser.Expr = "a = #10";
-
-            // define a variável 'a'
-            ParserVariable a = parser.DefineVar("a", 0.0);
+            parser.Expr = "#10";
 
             // adiciona a função de parser
             parser.AddValIdent((string remainingExpr, ref int pos, ref double value) =>
             {
                 // ignora o token se ele não comecar com '#'
-                if (remainingExpr[0] != '#')
+                if (remainingExpr.Length == 0 || remainingExpr[0] != '#')
                     return false;
 
-                int n = int.Parse(remainingExpr);
+                // pega a string a frente do simbolo
+                string strN = remainingExpr.Substring(1);
 
-                value = n;
+                int n = 0;
 
-                return true;
+                if (int.TryParse(strN, out n))
+                {
+                    value = n;
+
+                    // incrementa a posição para ir para o próximo token
+                    pos += remainingExpr.Length;
+
+                    return true;
+                }
+
+                return false;
             });
 
-            parser.Eval();
+            double res = parser.Eval();
 
             // verifica se fez o parser corretamente
-            Assert.AreEqual(10.0, a.Value);
+            Assert.AreEqual(10.0, res);
         }
     }
 }
