@@ -188,6 +188,11 @@ namespace muParserNET
 		void CleanOprt();
 		void EnableBuiltInOprt(bool oprtEn);
 
+		void SetArgSep(wchar_t value);
+		void SetDecSep(wchar_t value);
+		void SetThousandsSep(wchar_t value);
+		void ResetLocale();
+
 		//void SetVarFactory(FactoryFunction ^func, Object ^userData);
 
 		double Eval();

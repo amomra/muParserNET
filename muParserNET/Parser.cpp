@@ -363,6 +363,26 @@ namespace muParserNET
 		this->parser->EnableBuiltInOprt(oprtEn);
 	}
 
+	void Parser::SetArgSep(wchar_t value)
+	{
+		this->parser->SetArgSep(value);
+	}
+
+	void Parser::SetDecSep(wchar_t value)
+	{
+		this->parser->SetDecSep(value);
+	}
+
+	void Parser::SetThousandsSep(wchar_t value)
+	{
+		this->parser->SetThousandsSep(value);
+	}
+
+	void Parser::ResetLocale()
+	{
+		this->parser->ResetLocale();
+	}
+
 	/* // DEIXAR POR ÚLTIMO!!!
 
 	double *__VariableFactoryCallback(const mu::char_type *a_szName, void *pUserData)
