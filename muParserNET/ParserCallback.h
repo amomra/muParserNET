@@ -21,7 +21,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 
-This software contains parts copied from muParser library.
+This software uses and contains parts copied from muParser library.
 muParser library - Copyright (C) 2013 Ingo Berg
 */
 
@@ -32,6 +32,9 @@ using namespace System::Runtime::InteropServices;
 
 namespace muParserNET
 {
+	/// <summary>
+	/// Class of the parser callbacks.
+	/// </summary>
 	public ref class ParserCallback
 	{
 	private:
@@ -43,18 +46,35 @@ namespace muParserNET
 		 */
 		GCHandle ptrFunc;
 	public:
+		/// <summary>
+		/// Gets the delegate which represents the callback.
+		/// </summary>
 		property Delegate ^Function
 		{
 			Delegate ^get();
 		}
 
+		/// <summary>
+		/// Gets the function pointer to be passed to muParser library.
+		/// </summary>
 		property IntPtr Pointer
 		{
 			IntPtr get();
 		}
 
 	public:
+		/// <summary>
+		/// Class constructor. It receives a delegate that will represent the
+		/// callback triggered by the muParser library. It also blocks the
+		/// garbage colletor to destroy the delegate object.
+		/// </summary>
+		/// <param name="func">The callback delegate object</param>
 		ParserCallback(Delegate ^func);
+
+		/// <summary>
+		/// Class destructor. It releases the delegate object to be removed by
+		/// the garbage collector.
+		/// </summary>
 		virtual ~ParserCallback();
 	};
 }

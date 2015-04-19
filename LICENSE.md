@@ -24,5 +24,5 @@ This project was released under the MIT License:
 	OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 	THE SOFTWARE.
 	
-	This software contains parts copied from muParser library.
+	This software uses and contains parts copied from muParser library.
 	muParser library - Copyright (C) 2013 Ingo Berg

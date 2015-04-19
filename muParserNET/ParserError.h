@@ -21,7 +21,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 
-This software contains parts copied from muParser library.
+This software uses and contains parts copied from muParser library.
 muParser library - Copyright (C) 2013 Ingo Berg
 */
 
@@ -33,19 +33,49 @@ using namespace System;
 
 namespace muParserNET
 {
-
+	/// <summary>
+	/// Error class of the parser.
+	/// </summary>
 	public ref class ParserError
 		: public Exception
 	{
 	public:
+		/// <summary>
+		/// Gets or sets the expression with error.
+		/// </summary>
 		property String ^Expr;
+
+		/// <summary>
+		/// Gets or sets the invalid token.
+		/// </summary>
 		property String ^Token;
+
+		/// <summary>
+		/// Gets or sets the position of the error in expression.
+		/// </summary>
 		property int Pos;
+
+		/// <summary>
+		/// Gets or sets the error code.
+		/// </summary>
 		property ErrorCodes Code;
 
 	public:
+		/// <summary>
+		/// Class constructor.
+		/// </summary>
 		ParserError();
+
+		/// <summary>
+		/// Class constructor. Initialize the object properties with the native
+		/// exception thrown by the muParser library.
+		/// </summary>
+		/// <param name="err">The muParser exception</param>
 		explicit ParserError(mu::Parser::exception_type &err);
+
+		/// <summary>
+		/// Class destructor.
+		/// </summary>
 		virtual ~ParserError();
 	};
 

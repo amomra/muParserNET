@@ -21,7 +21,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 
-This software contains parts copied from muParser library.
+This software uses and contains parts copied from muParser library.
 muParser library - Copyright (C) 2013 Ingo Berg
 */
 
@@ -260,17 +260,35 @@ namespace muParserNET
 
 	void Parser::DefineConst(String ^name, double value)
 	{
-		mu::string_type strName = msclr::interop::marshal_as<mu::string_type>(name);
+		try
+		{
+			mu::string_type strName = msclr::interop::marshal_as<mu::string_type>(name);
 
-		this->parser->DefineConst(strName, value);
+			this->parser->DefineConst(strName, value);
+
+		}
+		catch (mu::Parser::exception_type &e)
+		{
+			// lança a exceção do .NET
+			throw gcnew ParserError(e);
+		}
 	}
 
 	void Parser::DefineStrConst(String ^name, String ^value)
 	{
-		mu::string_type strName = msclr::interop::marshal_as<mu::string_type>(name);
-		mu::string_type strValue = msclr::interop::marshal_as<mu::string_type>(value);
+		try
+		{
+			mu::string_type strName = msclr::interop::marshal_as<mu::string_type>(name);
+			mu::string_type strValue = msclr::interop::marshal_as<mu::string_type>(value);
 
-		this->parser->DefineStrConst(strName, strValue);
+			this->parser->DefineStrConst(strName, strValue);
+
+		}
+		catch (mu::Parser::exception_type &e)
+		{
+			// lança a exceção do .NET
+			throw gcnew ParserError(e);
+		}
 	}
 
 	void Parser::ClearConst()
@@ -388,6 +406,11 @@ namespace muParserNET
 	void Parser::EnableBuiltInOprt(bool oprtEn)
 	{
 		this->parser->EnableBuiltInOprt(oprtEn);
+	}
+
+	void Parser::EnableOptimizer(bool optmEn)
+	{
+		this->parser->EnableOptimizer(optmEn);
 	}
 
 	void Parser::SetArgSep(wchar_t value)
