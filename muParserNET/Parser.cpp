@@ -106,6 +106,10 @@ namespace muParserNET
 		// inicializa as listas de delegates
 		this->identFunctionsCallbacks = gcnew List<ParserCallback ^>();
 		this->funcCallbacks = gcnew Dictionary<String ^, ParserCallback ^>();
+
+		this->infixOprtCallbacks = gcnew Dictionary<String ^, ParserCallback ^>();
+		this->postfixOprtCallbacks = gcnew Dictionary<String ^, ParserCallback ^>();
+		this->oprtCallbacks = gcnew Dictionary<String ^, ParserCallback ^>();
 	}
 
 	Parser::~Parser()
@@ -118,6 +122,13 @@ namespace muParserNET
 			delete this->identFunctionsCallbacks[i];
 		for each (KeyValuePair<String ^, ParserCallback ^> funcCallback in this->funcCallbacks)
 			delete funcCallback.Value;
+
+		for each (KeyValuePair<String ^, ParserCallback ^> infixOprtCallback in this->infixOprtCallbacks)
+			delete infixOprtCallback.Value;
+		for each (KeyValuePair<String ^, ParserCallback ^> postfixOprtCallback in this->postfixOprtCallbacks)
+			delete postfixOprtCallback.Value;
+		for each (KeyValuePair<String ^, ParserCallback ^> oprtCallback in this->oprtCallbacks)
+			delete oprtCallback.Value;
 
 		// finaliza o parser
 		delete this->parser;
@@ -224,6 +235,96 @@ namespace muParserNET
 	{
 		this->parser->ClearFun();
 		this->funcCallbacks->Clear();
+	}
+
+	void Parser::DefineInfixOprt(String ^identifier, FunType1 ^func, unsigned precedence, bool allowOpt)
+	{
+		try
+		{
+			mu::string_type strIdentifier = msclr::interop::marshal_as<mu::string_type>(identifier);
+
+			// bloqueia o GC de mover o delegate
+			ParserCallback ^callback = gcnew ParserCallback(func);
+
+			this->parser->DefineInfixOprt(
+				strIdentifier,
+				static_cast<mu::fun_type1>(callback->Pointer.ToPointer()),
+				precedence,
+				allowOpt);
+
+			this->infixOprtCallbacks->Add(identifier, callback);
+		}
+		catch (mu::Parser::exception_type &e)
+		{
+			// lança a exceção do .NET
+			throw gcnew ParserError(e);
+		}
+	}
+
+	void Parser::DefinePostfixOprt(String ^identifier, FunType1 ^func, bool allowOpt)
+	{
+		try
+		{
+			mu::string_type strIdentifier = msclr::interop::marshal_as<mu::string_type>(identifier);
+
+			// bloqueia o GC de mover o delegate
+			ParserCallback ^callback = gcnew ParserCallback(func);
+
+			this->parser->DefinePostfixOprt(
+				strIdentifier,
+				static_cast<mu::fun_type1>(callback->Pointer.ToPointer()),
+				allowOpt);
+
+			this->postfixOprtCallbacks->Add(identifier, callback);
+		}
+		catch (mu::Parser::exception_type &e)
+		{
+			// lança a exceção do .NET
+			throw gcnew ParserError(e);
+		}
+	}
+
+	void Parser::DefineOprt(String ^identifier, FunType2 ^func, unsigned precedence, OprtAssociativity associativity, bool allowOpt)
+	{
+		try
+		{
+			mu::string_type strIdentifier = msclr::interop::marshal_as<mu::string_type>(identifier);
+
+			// bloqueia o GC de mover o delegate
+			ParserCallback ^callback = gcnew ParserCallback(func);
+
+			this->parser->DefineOprt(
+				strIdentifier,
+				static_cast<mu::fun_type2>(callback->Pointer.ToPointer()),
+				precedence,
+				(mu::EOprtAssociativity)associativity,
+				allowOpt);
+
+			this->oprtCallbacks->Add(identifier, callback);
+		}
+		catch (mu::Parser::exception_type &e)
+		{
+			// lança a exceção do .NET
+			throw gcnew ParserError(e);
+		}
+	}
+
+	void Parser::CleanInfixOprt()
+	{
+		this->parser->ClearInfixOprt();
+		this->infixOprtCallbacks->Clear();
+	}
+
+	void Parser::CleanPostfixOprt()
+	{
+		this->parser->ClearPostfixOprt();
+		this->postfixOprtCallbacks->Clear();
+	}
+
+	void Parser::CleanOprt()
+	{
+		this->parser->ClearOprt();
+		this->oprtCallbacks->Clear();
 	}
 
 	/* // DEIXAR POR ÚLTIMO!!!

@@ -140,6 +140,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Functions.h" />
+    <ClInclude Include="OprtAssociativity.h" />
     <ClInclude Include="ParserCallback.h" />
     <ClInclude Include="ParserVariable.h" />
     <ClInclude Include="ErrorCodes.h" />

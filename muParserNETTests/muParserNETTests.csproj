@@ -49,7 +49,10 @@
     <Otherwise />
   </Choose>
   <ItemGroup>
+    <Compile Include="ParserFunTests.cs" />
+    <Compile Include="ParserOprtTests.cs" />
     <Compile Include="ParserTests.cs" />
+    <Compile Include="ParserVarsTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

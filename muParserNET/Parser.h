@@ -3,6 +3,7 @@
 #include "ParserVariable.h"
 #include "ParserCallback.h"
 #include "ParserError.h"
+#include "OprtAssociativity.h"
 
 #include "Functions.h"
 
@@ -65,6 +66,13 @@ namespace muParserNET
 				throw gcnew ParserError(e);
 			}
 		}
+
+	private:
+		// Atributos de apoio as funções de definição de operadores
+
+		Dictionary<String ^, ParserCallback ^> ^infixOprtCallbacks;
+		Dictionary<String ^, ParserCallback ^> ^postfixOprtCallbacks;
+		Dictionary<String ^, ParserCallback ^> ^oprtCallbacks;
 
 	public:
 		property String ^Expr
@@ -151,6 +159,13 @@ namespace muParserNET
 		void DefineFun(String ^name, StrFunType3 ^func, bool allowOpt);
 
 		void ClearFun();
+
+		void DefineInfixOprt(String ^identifier, FunType1 ^func, unsigned precedence, bool allowOpt);
+		void DefinePostfixOprt(String ^identifier, FunType1 ^func, bool allowOpt);
+		void DefineOprt(String ^identifier, FunType2 ^func, unsigned precedence, OprtAssociativity associativity, bool allowOpt);
+		void CleanInfixOprt();
+		void CleanPostfixOprt();
+		void CleanOprt();
 
 		//void SetVarFactory(FactoryFunction ^func, Object ^userData);
 
