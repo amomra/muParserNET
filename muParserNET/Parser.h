@@ -99,19 +99,19 @@ namespace muParserNET
 			void set(String ^value);
 		}
 
-		property IReadOnlyDictionary<String ^, ParserVariable ^> ^Vars
+		property Dictionary<String ^, ParserVariable ^> ^Vars
 		{
-			IReadOnlyDictionary<String ^, ParserVariable ^> ^get();
+			Dictionary<String ^, ParserVariable ^> ^get();
 		}
 
-		property IReadOnlyDictionary<String ^, double> ^Consts
+		property Dictionary<String ^, double> ^Consts
 		{
-			IReadOnlyDictionary<String ^, double> ^get();
+			Dictionary<String ^, double> ^get();
 		}
 
-		property IReadOnlyDictionary<String ^, ParserCallback ^> ^Functions
+		property Dictionary<String ^, ParserCallback ^> ^Functions
 		{
-			IReadOnlyDictionary<String ^, ParserCallback ^> ^get();
+			Dictionary<String ^, ParserCallback ^> ^get();
 		}
 
 		property List<String ^> ^BuiltInOprts
@@ -119,19 +119,19 @@ namespace muParserNET
 			List<String ^> ^get();
 		}
 
-		property IReadOnlyDictionary<String ^, ParserCallback ^> ^InfixOprts
+		property Dictionary<String ^, ParserCallback ^> ^InfixOprts
 		{
-			IReadOnlyDictionary<String ^, ParserCallback ^> ^get();
+			Dictionary<String ^, ParserCallback ^> ^get();
 		}
 
-		property IReadOnlyDictionary<String ^, ParserCallback ^> ^PostfixOprts
+		property Dictionary<String ^, ParserCallback ^> ^PostfixOprts
 		{
-			IReadOnlyDictionary<String ^, ParserCallback ^> ^get();
+			Dictionary<String ^, ParserCallback ^> ^get();
 		}
 
-		property IReadOnlyDictionary<String ^, ParserCallback ^> ^Oprts
+		property Dictionary<String ^, ParserCallback ^> ^Oprts
 		{
-			IReadOnlyDictionary<String ^, ParserCallback ^> ^get();
+			Dictionary<String ^, ParserCallback ^> ^get();
 		}
 	public:
 		Parser();

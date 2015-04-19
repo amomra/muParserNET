@@ -68,7 +68,7 @@ namespace muParserNET
 		this->parser->DefineInfixOprtChars(str.c_str());
 	}
 
-	IReadOnlyDictionary<String ^, ParserVariable ^> ^Parser::Vars::get()
+	Dictionary<String ^, ParserVariable ^> ^Parser::Vars::get()
 	{
 		/*
 		 * A princípio não é para ter variáveis a mais no parser do que tem
@@ -77,7 +77,7 @@ namespace muParserNET
 		return this->vars;
 	}
 
-	IReadOnlyDictionary<String ^, double> ^Parser::Consts::get()
+	Dictionary<String ^, double> ^Parser::Consts::get()
 	{
 		// converte o map do parser
 		const mu::valmap_type &consts = this->parser->GetConst();
@@ -90,7 +90,7 @@ namespace muParserNET
 		return res;
 	}
 
-	IReadOnlyDictionary<String ^, ParserCallback ^> ^Parser::Functions::get()
+	Dictionary<String ^, ParserCallback ^> ^Parser::Functions::get()
 	{
 		return this->funcCallbacks;
 	}
@@ -111,17 +111,17 @@ namespace muParserNET
 		return oprts;
 	}
 
-	IReadOnlyDictionary<String ^, ParserCallback ^> ^Parser::InfixOprts::get()
+	Dictionary<String ^, ParserCallback ^> ^Parser::InfixOprts::get()
 	{
 		return this->infixOprtCallbacks;
 	}
 
-	IReadOnlyDictionary<String ^, ParserCallback ^> ^Parser::PostfixOprts::get()
+	Dictionary<String ^, ParserCallback ^> ^Parser::PostfixOprts::get()
 	{
 		return this->postfixOprtCallbacks;
 	}
 
-	IReadOnlyDictionary<String ^, ParserCallback ^> ^Parser::Oprts::get()
+	Dictionary<String ^, ParserCallback ^> ^Parser::Oprts::get()
 	{
 		return this->oprtCallbacks;
 	}
