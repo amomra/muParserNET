@@ -113,6 +113,26 @@ namespace muParserNET
 		{
 			IReadOnlyDictionary<String ^, ParserCallback ^> ^get();
 		}
+
+		property List<String ^> ^BuiltInOprts
+		{
+			List<String ^> ^get();
+		}
+
+		property IReadOnlyDictionary<String ^, ParserCallback ^> ^InfixOprts
+		{
+			IReadOnlyDictionary<String ^, ParserCallback ^> ^get();
+		}
+
+		property IReadOnlyDictionary<String ^, ParserCallback ^> ^PostfixOprts
+		{
+			IReadOnlyDictionary<String ^, ParserCallback ^> ^get();
+		}
+
+		property IReadOnlyDictionary<String ^, ParserCallback ^> ^Oprts
+		{
+			IReadOnlyDictionary<String ^, ParserCallback ^> ^get();
+		}
 	public:
 		Parser();
 		virtual ~Parser();
@@ -166,6 +186,7 @@ namespace muParserNET
 		void CleanInfixOprt();
 		void CleanPostfixOprt();
 		void CleanOprt();
+		void EnableBuiltInOprt(bool oprtEn);
 
 		//void SetVarFactory(FactoryFunction ^func, Object ^userData);
 

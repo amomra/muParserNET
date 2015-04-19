@@ -95,6 +95,37 @@ namespace muParserNET
 		return this->funcCallbacks;
 	}
 
+	List<String ^> ^Parser::BuiltInOprts::get()
+	{
+		/*
+		 * A lista de operadores do muParser é composta por string onde o último
+		 * elemento terá um nullptr para indicar o fim da lista.
+		 */
+		List<String ^> ^oprts = gcnew List<String ^>();
+
+		const mu::char_type **dfOprts = this->parser->GetOprtDef();
+
+		for (int i = 0; dfOprts[i] != nullptr; i++)
+			oprts->Add(gcnew String(dfOprts[i]));
+
+		return oprts;
+	}
+
+	IReadOnlyDictionary<String ^, ParserCallback ^> ^Parser::InfixOprts::get()
+	{
+		return this->infixOprtCallbacks;
+	}
+
+	IReadOnlyDictionary<String ^, ParserCallback ^> ^Parser::PostfixOprts::get()
+	{
+		return this->postfixOprtCallbacks;
+	}
+
+	IReadOnlyDictionary<String ^, ParserCallback ^> ^Parser::Oprts::get()
+	{
+		return this->oprtCallbacks;
+	}
+
 	Parser::Parser()
 	{
 		// inicializa o parser
@@ -325,6 +356,11 @@ namespace muParserNET
 	{
 		this->parser->ClearOprt();
 		this->oprtCallbacks->Clear();
+	}
+
+	void Parser::EnableBuiltInOprt(bool oprtEn)
+	{
+		this->parser->EnableBuiltInOprt(oprtEn);
 	}
 
 	/* // DEIXAR POR ÚLTIMO!!!
