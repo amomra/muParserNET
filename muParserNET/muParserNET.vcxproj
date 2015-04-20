@@ -176,9 +176,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="ReadMe.txt" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\muParser\muParser.vcxproj">
       <Project>{75b9dd84-77c8-4a54-af2f-f1d958409ef0}</Project>
       <Private>true</Private>
