@@ -6,6 +6,19 @@ This project has no dependences with other libraries except `muParser`, which is
 
 ## Installation ##
 
-- NuGET : Work in progress
+The package is available to download at NuGet repository. It contains the 32 and 64 bits versions of the package.
 
-The solution can be downloaded and compiled with Visual Studio 2013. It supports both 32 and 64 bits platforms.
+- https://www.nuget.org/packages/muParserNET.Win-x86/
+- https://www.nuget.org/packages/muParserNET.Win-x64/
+
+The solution can be also downloaded and compiled with Visual Studio 2013.
+
+## Documentation ##
+
+The library implements most functionalities of muParser library without changes in the API.
+
+The library lacks supports for the following functionalities:
+
+- Implicit variable creation.
+
+There may have more features that are not supported.
