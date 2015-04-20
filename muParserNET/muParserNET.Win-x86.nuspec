@@ -10,7 +10,7 @@
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
         <description>This library is a .NET wrapper for the math parser library muParser (http://muparser.beltoforion.de/).</description>
         <copyright>Copyright (c) 2015 Luiz Carlos Viana Melo</copyright>
-        <tags>muParser</tags>
+        <tags>muParser math parser</tags>
     </metadata>
 	<files>
 		<file src="..\Release\muParserNET.dll" target="lib\Net40" />

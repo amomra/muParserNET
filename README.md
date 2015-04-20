@@ -22,3 +22,5 @@ The library lacks supports for the following functionalities:
 - Implicit variable creation.
 
 There may have more features that are not supported.
+
+The documentation is available at the project [wiki](https://github.com/amomra/muParserNET/wiki).
