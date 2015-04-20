@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+    <metadata>
+        <id>muParserNET.Win-x86</id>
+        <version>0.9.1</version>
+        <title>muParserNET (Windows 32 bits)</title>
+        <authors>Luiz Carlos Viana Melo</authors>
+        <licenseUrl>https://github.com/amomra/muParserNET/blob/v0.9/LICENSE.md</licenseUrl>
+        <projectUrl>https://github.com/amomra/muParserNET</projectUrl>
+        <requireLicenseAcceptance>false</requireLicenseAcceptance>
+        <description>This library is a .NET wrapper for the math parser library muParser (http://muparser.beltoforion.de/).</description>
+        <copyright>Copyright (c) 2015 Luiz Carlos Viana Melo</copyright>
+        <tags>muParser</tags>
+    </metadata>
+	<files>
+		<file src="..\Release\muParserNET.dll" target="lib\Net40" />
+		<file src="..\Release\muParserNET.xml" target="lib\Net40" />
+	</files>
+</package>
