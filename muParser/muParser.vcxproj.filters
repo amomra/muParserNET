@@ -46,6 +46,9 @@
     <ClCompile Include="muParserTokenReader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="muParserNETDLL.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="muParser.h">
@@ -88,6 +91,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="muParserTokenReader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="muParserNETDLL.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

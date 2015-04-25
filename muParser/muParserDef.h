@@ -36,7 +36,7 @@
     \brief This file contains standard definitions used by the parser.
 */
 
-#define MUP_VERSION _T("2.2.4")
+#define MUP_VERSION _T("2.2.4-muParserNET")
 #define MUP_VERSION_DATE _T("20141210; GC")
 
 #define MUP_CHARS _T("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")

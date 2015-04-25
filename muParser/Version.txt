@@ -1,1 +1,3 @@
 2.2.4
+
+- When changing the muParser version, append the '-muParserNET' string to the MUP_VERSION define in muParserDef.h

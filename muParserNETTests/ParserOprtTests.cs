@@ -94,5 +94,18 @@ namespace muParserNETTests
 
             Assert.AreEqual(10.0, res);
         }
+
+        [Test]
+        public void TestClearInfixOprt()
+        {
+            /*
+             * Este teste é apenas para verificar se o .NET detecta que a função
+             * não é suportada.
+             */
+
+            // cria o parser
+            Parser parser = new Parser();
+            parser.CleanInfixOprt();
+        }
     }
 }

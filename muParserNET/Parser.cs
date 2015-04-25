@@ -68,11 +68,13 @@ namespace muParserNET
 
         #region Atributos de apoio as funções de definição de operadores
 
+        private Dictionary<string, ParserCallback> infixOprtCallbacks;
+        private Dictionary<string, ParserCallback> postfixOprtCallbacks;
         private Dictionary<string, ParserCallback> oprtCallbacks;
 
         #endregion
 
-        #region Proprieades
+        #region Propriedades
 
         /// <summary>
         /// Gets or sets the parser expression.
@@ -86,6 +88,69 @@ namespace muParserNET
             set
             {
                 MuParserFunctions.mupSetExpr(this.parserHandler, value);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the list of valid chars to be used in variables names.
+        /// </summary>
+        /// <remarks>The get function of this property is not supported if using the original
+        /// muParser library instead of the muParserNET-compatible library (which
+        /// is available at muParserNET repository.</remarks>
+        public string NameChars
+        {
+            get
+            {
+                // checa se a biblioteca do muParser é compatível
+                this.CheckLibraryVersion();
+
+                return Marshal.PtrToStringAnsi(MuParserFunctions.mupValidNameChars(this.parserHandler));
+            }
+            set
+            {
+                MuParserFunctions.mupDefineNameChars(this.parserHandler, value);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the list of valid chars to be used as binary operators.
+        /// </summary>
+        /// <remarks>The get function of this property is not supported if using the original
+        /// muParser library instead of the muParserNET-compatible library (which
+        /// is available at muParserNET repository.</remarks>
+        public string OprtChars
+        {
+            get
+            {
+                // checa se a biblioteca do muParser é compatível
+                this.CheckLibraryVersion();
+
+                return Marshal.PtrToStringAnsi(MuParserFunctions.mupValidOprtChars(this.parserHandler));
+            }
+            set
+            {
+                MuParserFunctions.mupDefineOprtChars(this.parserHandler, value);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the list of valid chars to be used as unary infix operators.
+        /// </summary>
+        /// <remarks>The get function of this property is not supported if using the original
+        /// muParser library instead of the muParserNET-compatible library (which
+        /// is available at muParserNET repository.</remarks>
+        public string InfixOprtChars
+        {
+            get
+            {
+                // checa se a biblioteca do muParser é compatível
+                this.CheckLibraryVersion();
+
+                return Marshal.PtrToStringAnsi(MuParserFunctions.mupValidInfixOprtChars(this.parserHandler));
+            }
+            set
+            {
+                MuParserFunctions.mupDefineInfixOprtChars(this.parserHandler, value);
             }
         }
 
@@ -140,6 +205,28 @@ namespace muParserNET
         }
 
         /// <summary>
+		/// Gets the list of available unary infix operators to be used in expressions.
+		/// </summary>
+		public Dictionary<string, ParserCallback> InfixOprts
+		{
+            get
+            {
+                return this.infixOprtCallbacks;
+            }
+        }
+
+		/// <summary>
+		/// Gets the list of available unary postfix operators to be used in expressions.
+		/// </summary>
+		public Dictionary<string, ParserCallback> PostfixOprts
+        {
+            get
+            {
+                return this.postfixOprtCallbacks;
+            }
+        }
+
+        /// <summary>
         /// Gets the list of available binary operators to be used in expressions.
         /// </summary>
         public Dictionary<string, ParserCallback> Oprts
@@ -168,6 +255,9 @@ namespace muParserNET
             // inicializa as listas de delegates
             this.identFunctionsCallbacks = new List<ParserCallback>();
             this.funcCallbacks = new Dictionary<string, ParserCallback>();
+
+            this.infixOprtCallbacks = new Dictionary<string, ParserCallback>();
+            this.postfixOprtCallbacks = new Dictionary<string, ParserCallback>();
             this.oprtCallbacks = new Dictionary<string, ParserCallback>();
 
             // ajusta a função de tratamento de erros
@@ -181,6 +271,17 @@ namespace muParserNET
         {
             // finaliza o parser
             MuParserFunctions.mupRelease(this.parserHandler);
+        }
+
+        /// <summary>
+        /// Checks if the muParser library is compatible with the muParserNET.
+        /// If not, it throws an exception.
+        /// </summary>
+        private void CheckLibraryVersion()
+        {
+            // esta função não é suportada pela versão original do muParser
+            if (!this.GetVersion().Contains("muParserNET"))
+                throw new NotSupportedException("This function only works with the muParserNET modified muParser library");
         }
 
         /// <summary>
@@ -199,6 +300,19 @@ namespace muParserNET
 
             // lança a exceção
             throw new ParserError(message, expr, token, pos, code);
+        }
+
+        /// <summary>
+        /// Returns the muParser version.
+        /// </summary>
+        /// <returns>The string with the muParser library version. It will contain
+        /// the '-muParserNET' string appended if compiled from muParserNET
+        /// repository. If using the original muParser library, some functions
+        /// will not work</returns>
+        public string GetVersion()
+        {
+            IntPtr ptrVersion = MuParserFunctions.mupGetVersion(this.parserHandler);
+            return Marshal.PtrToStringAnsi(ptrVersion);
         }
 
         /// <summary>
@@ -792,7 +906,7 @@ namespace muParserNET
 
             MuParserFunctions.mupDefineInfixOprt(this.parserHandler, identifier, func, allowOpt);
 
-            this.oprtCallbacks.Add(identifier, callback);
+            this.infixOprtCallbacks.Add(identifier, callback);
         }
 
         /// <summary>
@@ -809,7 +923,7 @@ namespace muParserNET
 
             MuParserFunctions.mupDefinePostfixOprt(this.parserHandler, identifier, func, allowOpt);
 
-            this.oprtCallbacks.Add(identifier, callback);
+            this.postfixOprtCallbacks.Add(identifier, callback);
         }
 
         /// <summary>
@@ -832,12 +946,75 @@ namespace muParserNET
         }
 
         /// <summary>
+        /// Clears all infix operators.
+        /// </summary>
+        /// <remarks>This function is not supported if using the original
+        /// muParser library instead of the muParserNET-compatible library (which
+        /// is available at muParserNET repository).</remarks>
+        public void CleanInfixOprt()
+        {
+            // checa se a biblioteca do muParser é compatível
+            this.CheckLibraryVersion();
+
+            MuParserFunctions.mupClearInfixOprt(this.parserHandler);
+            this.infixOprtCallbacks.Clear();
+        }
+
+        /// <summary>
+        /// Clears all postfix operators.
+        /// </summary>
+        /// <remarks>This function is not supported if using the original
+        /// muParser library instead of the muParserNET-compatible library (which
+        /// is available at muParserNET repository).</remarks>
+        public void CleanPostfixOprt()
+        {
+            // checa se a biblioteca do muParser é compatível
+            this.CheckLibraryVersion();
+
+            MuParserFunctions.mupClearPostfixOprt(this.parserHandler);
+            this.postfixOprtCallbacks.Clear();
+        }
+
+        /// <summary>
         /// Clears all operators.
         /// </summary>
         public void CleanOprt()
         {
             MuParserFunctions.mupClearOprt(this.parserHandler);
             this.oprtCallbacks.Clear();
+        }
+
+        /// <summary>
+        /// Enable or disable the built in binary operators. If you disable the
+        /// built in binary operators there will be no binary operators defined.
+        /// Thus you must add them manually one by one. It is not possible to
+        /// disable built in operators selectively.
+        /// </summary>
+        /// <param name="oprtEn">Indicates if the operators will be enable or disabled</param>
+        /// <remarks>This function is not supported if using the original
+        /// muParser library instead of the muParserNET-compatible library (which
+        /// is available at muParserNET repository).</remarks>
+        public void EnableBuiltInOprt(bool oprtEn)
+        {
+            // checa se a biblioteca do muParser é compatível
+            this.CheckLibraryVersion();
+
+            MuParserFunctions.mupEnableBuiltInOprt(this.parserHandler, oprtEn);
+        }
+
+        /// <summary>
+        /// Enable or disable the formula optimization feature. 
+        /// </summary>
+        /// <param name="optmEn">Indicates if the optimizer will be enable or disabled</param>
+        /// <remarks>This function is not supported if using the original
+        /// muParser library instead of the muParserNET-compatible library (which
+        /// is available at muParserNET repository).</remarks>
+        public void EnableOptimizer(bool optmEn)
+        {
+            // checa se a biblioteca do muParser é compatível
+            this.CheckLibraryVersion();
+
+            MuParserFunctions.mupEnableOptimizer(this.parserHandler, optmEn);
         }
 
         /// <summary>
@@ -938,33 +1115,6 @@ namespace muParserNET
 			// copia o resultado
             Marshal.Copy(result, ret, 0, n);
 			return ret;
-        }
-
-        /// <summary>
-        /// Sets the list of valid chars to be used in variables names.
-        /// </summary>
-        /// <param name="value">The string containing the valid chars</param>
-        public void DefineNameChars(string value)
-        {
-            MuParserFunctions.mupDefineNameChars(this.parserHandler, value);
-        }
-
-        /// <summary>
-        /// Sets the list of valid chars to be used as binary operators.
-        /// </summary>
-        /// <param name="value">The string containing the valid chars</param>
-        public void DefineOprtChars(string value)
-        {
-            MuParserFunctions.mupDefineOprtChars(this.parserHandler, value);
-        }
-
-        /// <summary>
-        /// Sets the list of valid chars to be used as unary infix operators.
-        /// </summary>
-        /// <param name="value">The string containing the valid chars</param>
-        public void DefineInfixOprtChars(string value)
-        {
-            MuParserFunctions.mupDefineInfixOprtChars(this.parserHandler, value);
         }
 
         #endregion

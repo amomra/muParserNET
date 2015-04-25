@@ -150,6 +150,7 @@
     <ClCompile Include="muParserDLL.cpp" />
     <ClCompile Include="muParserError.cpp" />
     <ClCompile Include="muParserInt.cpp" />
+    <ClCompile Include="muParserNETDLL.cpp" />
     <ClCompile Include="muParserTest.cpp" />
     <ClCompile Include="muParserTokenReader.cpp" />
   </ItemGroup>
@@ -163,6 +164,7 @@
     <ClInclude Include="muParserError.h" />
     <ClInclude Include="muParserFixes.h" />
     <ClInclude Include="muParserInt.h" />
+    <ClInclude Include="muParserNETDLL.h" />
     <ClInclude Include="muParserStack.h" />
     <ClInclude Include="muParserTemplateMagic.h" />
     <ClInclude Include="muParserTest.h" />
