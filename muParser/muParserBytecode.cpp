@@ -25,10 +25,10 @@
 
 #include "muParserBytecode.h"
 
+#include <algorithm>
 #include <cassert>
 #include <string>
 #include <stack>
-#include <algorithm>
 #include <vector>
 #include <iostream>
 
@@ -92,6 +92,7 @@ namespace mu
     m_iStackPos = a_ByteCode.m_iStackPos;
     m_vRPN = a_ByteCode.m_vRPN;
     m_iMaxStackSize = a_ByteCode.m_iMaxStackSize;
+	m_bEnableOptimizer = a_ByteCode.m_bEnableOptimizer;
   }
 
   //---------------------------------------------------------------------------
@@ -345,7 +346,7 @@ namespace mu
 
     SToken tok;
     tok.Cmd = cmASSIGN;
-    tok.Val.ptr = a_pVar;
+    tok.Oprt.ptr = a_pVar;
     m_vRPN.push_back(tok);
   }
 

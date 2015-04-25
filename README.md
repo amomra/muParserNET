@@ -2,7 +2,7 @@
 
 This library is a .NET wrapper for the math parser library `muParser` (http://muparser.beltoforion.de/). It was written in C# for Windows 32 or 64 bits and tested in those systems. It wasn't tested with Mono.
 
-This project has no dependences with other libraries except `muParser`, which is included in the solution. The `muParser` is compiled as a dynamic library and linked with this library at runtime according the platform (32 or 64 bits). The library targeted framework is the .NET 4.0. This project uses the `muParser` version 2.2.3 and its class library.
+This project has no dependences with other libraries except `muParser`, which is included in the solution. The `muParser` is compiled as a dynamic library and linked with this library at runtime according the platform (32 or 64 bits). The library targeted framework is the .NET 4.0. This project uses the `muParser` version 2.2.4 and its DLL interface.
 
 ## Installation ##
 

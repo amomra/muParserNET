@@ -169,6 +169,9 @@ namespace muParserNET
             this.identFunctionsCallbacks = new List<ParserCallback>();
             this.funcCallbacks = new Dictionary<string, ParserCallback>();
             this.oprtCallbacks = new Dictionary<string, ParserCallback>();
+
+            // ajusta a função de tratamento de erros
+            MuParserFunctions.mupSetErrorHandler(this.parserHandler, this.ErrorHandler);
         }
 
         /// <summary>
@@ -178,6 +181,24 @@ namespace muParserNET
         {
             // finaliza o parser
             MuParserFunctions.mupRelease(this.parserHandler);
+        }
+
+        /// <summary>
+        /// Error handler. It loads the ParserError exception.
+        /// </summary>
+        private void ErrorHandler()
+        {
+            IntPtr ptrMessage = MuParserFunctions.mupGetErrorMsg(this.parserHandler);
+            IntPtr ptrToken = MuParserFunctions.mupGetErrorToken(this.parserHandler);
+
+            string message = Marshal.PtrToStringAnsi(ptrMessage);
+            string expr = this.Expr;
+            string token = Marshal.PtrToStringAnsi(ptrToken);
+            ErrorCodes code = (ErrorCodes)MuParserFunctions.mupGetErrorCode(this.parserHandler);
+            int pos = MuParserFunctions.mupGetErrorPos(this.parserHandler);
+
+            // lança a exceção
+            throw new ParserError(message, expr, token, pos, code);
         }
 
         /// <summary>

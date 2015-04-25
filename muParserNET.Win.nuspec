@@ -13,7 +13,8 @@
         <tags>muParser math parser</tags>
     </metadata>
 	<files>
-		<file src="..\Release\muParserNET.dll" target="lib\Net40" />
-		<file src="..\Release\muParserNET.xml" target="lib\Net40" />
+		<file src="Release\muParserNET.dll" target="lib\Net40" />
+		<file src="Release\muParserNET.xml" target="lib\Net40" />
+    <file src="Release\muParser.dll" target="lib" />
 	</files>
 </package>
