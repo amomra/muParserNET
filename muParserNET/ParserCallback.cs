@@ -1,4 +1,4 @@
-/*
+Ôªø/*
 muParserNET - muParser library wrapper for .NET Framework
 
 Copyright (c) 2015 Luiz Carlos Viana Melo
@@ -25,56 +25,60 @@ This software uses and contains parts copied from muParser library.
 muParser library - Copyright (C) 2013 Ingo Berg
 */
 
-#pragma once
-
-using namespace System;
-using namespace System::Runtime::InteropServices;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.InteropServices;
+using System.Text;
 
 namespace muParserNET
 {
-	/// <summary>
-	/// Class of the parser callbacks.
-	/// </summary>
-	public ref class ParserCallback
-	{
-	private:
-		Delegate ^func;
+    /// <summary>
+    /// Class of the parser callbacks.
+    /// </summary>
+    public class ParserCallback
+    {
+        private Delegate func;
 
-		/*
-		 * Quando a funÁ„o passa a ser um callback da biblioteca o objeto do
-		 * delegate n„o deve ser apagado pelo GC.
+        /*
+		 * Quando a fun√ß√£o passa a ser um callback da biblioteca o objeto do
+		 * delegate n√£o deve ser apagado pelo GC.
 		 */
-		GCHandle ptrFunc;
-	public:
-		/// <summary>
+        private GCHandle ptrFunc;
+
+        /// <summary>
 		/// Gets the delegate which represents the callback.
 		/// </summary>
-		property Delegate ^Function
+		public Delegate Function
 		{
-			Delegate ^get();
+			get
+            {
+                return this.func;
+            }
 		}
 
-		/// <summary>
-		/// Gets the function pointer to be passed to muParser library.
-		/// </summary>
-		property IntPtr Pointer
-		{
-			IntPtr get();
-		}
-
-	public:
-		/// <summary>
+        /// <summary>
 		/// Class constructor. It receives a delegate that will represent the
 		/// callback triggered by the muParser library. It also blocks the
 		/// garbage colletor to destroy the delegate object.
 		/// </summary>
 		/// <param name="func">The callback delegate object</param>
-		ParserCallback(Delegate ^func);
+		public ParserCallback(Delegate func)
+        {
+            this.func = func;
+
+            // bloqueia o GC de apagar o objeto do delegate
+		    this.ptrFunc = GCHandle.Alloc(func);
+        }
 
 		/// <summary>
 		/// Class destructor. It releases the delegate object to be removed by
 		/// the garbage collector.
 		/// </summary>
-		virtual ~ParserCallback();
-	};
+		~ParserCallback()
+        {
+            // libera o GC para apagar o objeto
+            this.ptrFunc.Free();
+        }
+    }
 }

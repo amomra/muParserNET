@@ -50,7 +50,7 @@ namespace muParserNETTests
             {
                 // eleva o número ao cubo
                 return val * val * val;
-            }, 6, true);
+            }, true);
 
             double res = parser.Eval();
 

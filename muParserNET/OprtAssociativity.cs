@@ -1,4 +1,4 @@
-/*
+﻿/*
 muParserNET - muParser library wrapper for .NET Framework
 
 Copyright (c) 2015 Luiz Carlos Viana Melo
@@ -25,59 +25,31 @@ This software uses and contains parts copied from muParser library.
 muParser library - Copyright (C) 2013 Ingo Berg
 */
 
-#pragma once
-
-#include "ErrorCodes.h"
-
-using namespace System;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 
 namespace muParserNET
 {
-	/// <summary>
-	/// Error class of the parser.
-	/// </summary>
-	public ref class ParserError
-		: public Exception
-	{
-	public:
-		/// <summary>
-		/// Gets or sets the expression with error.
-		/// </summary>
-		property String ^Expr;
+    /// <summary>
+    /// Parser operator precedence values.
+    /// </summary>
+    public enum OprtAssociativity : int
+    {
+        /// <summary>
+        /// Left
+        /// </summary>
+        LEFT = 0,
 
-		/// <summary>
-		/// Gets or sets the invalid token.
-		/// </summary>
-		property String ^Token;
+        /// <summary>
+        /// Right
+        /// </summary>
+        RIGHT = 1,
 
-		/// <summary>
-		/// Gets or sets the position of the error in expression.
-		/// </summary>
-		property int Pos;
-
-		/// <summary>
-		/// Gets or sets the error code.
-		/// </summary>
-		property ErrorCodes Code;
-
-	public:
-		/// <summary>
-		/// Class constructor.
-		/// </summary>
-		ParserError();
-
-		/// <summary>
-		/// Class constructor. Initialize the object properties with the native
-		/// exception thrown by the muParser library.
-		/// </summary>
-		/// <param name="err">The muParser exception</param>
-		explicit ParserError(mu::Parser::exception_type &err);
-
-		/// <summary>
-		/// Class destructor.
-		/// </summary>
-		virtual ~ParserError();
-	};
-
+        /// <summary>
+        /// None
+        /// </summary>
+        NONE = 2
+    }
 }
-
