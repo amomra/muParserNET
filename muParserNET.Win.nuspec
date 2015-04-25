@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
     <metadata>
         <id>muParserNET.Win</id>
-        <version>0.9.1</version>
+        <version>1.0.0</version>
         <title>muParserNET (Windows 32 and 64 bits)</title>
         <authors>Luiz Carlos Viana Melo</authors>
         <licenseUrl>https://github.com/amomra/muParserNET/blob/v0.9/LICENSE.md</licenseUrl>
@@ -15,6 +15,7 @@
 	<files>
 		<file src="Release\muParserNET.dll" target="lib\Net40" />
 		<file src="Release\muParserNET.xml" target="lib\Net40" />
-    <file src="Release\muParser.dll" target="lib" />
+    <file src="Release\muParser.dll" target="lib\Net40\x86" />
+    <file src="x64\Release\muParser.dll" target="lib\Net40\x64" />
 	</files>
 </package>
