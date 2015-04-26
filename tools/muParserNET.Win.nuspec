@@ -5,15 +5,12 @@
     <version>1.0.0</version>
     <title>muParserNET (Windows 32 and 64 bits)</title>
     <authors>Luiz Carlos Viana Melo</authors>
-    <licenseUrl>https://github.com/amomra/muParserNET/blob/v0.9/LICENSE.md</licenseUrl>
+    <licenseUrl>https://github.com/amomra/muParserNET/blob/v1.0/LICENSE.md</licenseUrl>
     <projectUrl>https://github.com/amomra/muParserNET</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>This library is a .NET wrapper for the math parser library muParser (http://muparser.beltoforion.de/).</description>
     <copyright>Copyright (c) 2015 Luiz Carlos Viana Melo</copyright>
     <tags>muParser math parser</tags>
-    <!-- dependencies>
-      <dependency id="Baseclass.Contrib.Nuget.Output" />
-    </dependencies -->
   </metadata>
   <files>
     <file src="install.ps1" target="tools" />
