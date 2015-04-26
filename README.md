@@ -12,6 +12,8 @@ The package is available to download at NuGet repository.
 
 - https://www.nuget.org/packages/muParserNET.Win/
 
+The NuGet package will include both 32 and 64 bits versions of the modified `muParser` library in the project as contents. They will be copied to output directory at build time. The libraries can be removed but `muParserNET` will not work if there isn't any `muParser` library in the OS library search path (in Windows those path are the current working dir and those in the `PATH` environment variable).
+
 The solution can be also downloaded and compiled with Visual Studio 2013.
 
 ## Documentation ##
