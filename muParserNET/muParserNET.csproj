@@ -45,6 +45,7 @@
     <Compile Include="ErrorCodes.cs" />
     <Compile Include="MuParserLibrary.cs" />
     <Compile Include="OprtAssociativity.cs" />
+    <Compile Include="OprtPrecedence.cs" />
     <Compile Include="Parser.cs" />
     <Compile Include="Functions.cs" />
     <Compile Include="ParserCallback.cs" />

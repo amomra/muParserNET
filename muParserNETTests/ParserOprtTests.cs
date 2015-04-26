@@ -88,7 +88,7 @@ namespace muParserNETTests
             {
                 // multiplica os números
                 return val1 * val2;
-            }, 6, OprtAssociativity.LEFT, true);
+            });
 
             double res = parser.Eval();
 
