@@ -935,7 +935,7 @@ namespace muParserNET
         /// <param name="associativity">The associativity of the operator</param>
         /// <param name="allowOpt">A flag indicating this function may be optimized</param>
         /// <exception cref="ParserError">Throws if there is a name conflict</exception>
-        public void DefineOprt(string identifier, FunType2 func, uint precedence, OprtAssociativity associativity, bool allowOpt = true)
+        public void DefineOprt(string identifier, FunType2 func, uint precedence = 0, OprtAssociativity associativity = OprtAssociativity.LEFT, bool allowOpt = false)
         {
             // bloqueia o GC de mover o delegate
             ParserCallback callback = new ParserCallback(func);
@@ -994,7 +994,7 @@ namespace muParserNET
         /// <remarks>This function is not supported if using the original
         /// muParser library instead of the muParserNET-compatible library (which
         /// is available at muParserNET repository).</remarks>
-        public void EnableBuiltInOprt(bool oprtEn)
+        public void EnableBuiltInOprt(bool oprtEn = true)
         {
             // checa se a biblioteca do muParser é compatível
             this.CheckLibraryVersion();
@@ -1009,7 +1009,7 @@ namespace muParserNET
         /// <remarks>This function is not supported if using the original
         /// muParser library instead of the muParserNET-compatible library (which
         /// is available at muParserNET repository).</remarks>
-        public void EnableOptimizer(bool optmEn)
+        public void EnableOptimizer(bool optmEn = true)
         {
             // checa se a biblioteca do muParser é compatível
             this.CheckLibraryVersion();
@@ -1043,7 +1043,7 @@ namespace muParserNET
         /// one provided here.
         /// </summary>
         /// <param name="value">The thousands separator character</param>
-        public void SetThousandsSep(char value)
+        public void SetThousandsSep(char value = '\0')
         {
             MuParserFunctions.mupSetThousandsSep(this.parserHandler, value);
         }
