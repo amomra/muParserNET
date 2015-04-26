@@ -182,9 +182,18 @@ namespace muParserNET
                 int numConsts = MuParserLibrary.mupGetConstNum(this.parserHandler);
                 for (int i = 0; i < numConsts; i++)
                 {
-                    string constName = "";
+
+                    /*
+                     * A biblioteca do muParser conta com um buffer interno que
+                     * é preenchido com o nome da constante. A função ajusta o
+                     * ponteiro passado para apontar para esse buffer. A gerência
+                     * deste buffer é feita pelo próprio muParser.
+                     */
+                    IntPtr buffConstName = new IntPtr();
                     double value = 0.0;
-                    MuParserLibrary.mupGetConst(this.parserHandler, (uint)i, ref constName, ref value);
+                    MuParserLibrary.mupGetConst(this.parserHandler, (uint)i, ref buffConstName, ref value);
+
+                    string constName = Marshal.PtrToStringAnsi(buffConstName);
 
                     consts[constName] = value;
                 }

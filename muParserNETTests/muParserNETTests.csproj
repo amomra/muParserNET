@@ -50,6 +50,7 @@
     <Otherwise />
   </Choose>
   <ItemGroup>
+    <Compile Include="ParserConstsTests.cs" />
     <Compile Include="ParserFunTests.cs" />
     <Compile Include="ParserOprtTests.cs" />
     <Compile Include="ParserTests.cs" />

@@ -286,8 +286,16 @@ namespace muParserNET
         // essas duas funções são perigosas já que não da para saber o tamanho dos arrays
         // public static extern void mupGetExprVar(IntPtr a_hParser, uint a_iVar, ref string a_pszName, ref double[] a_pVar);
         // public static extern void mupGetVar(IntPtr a_hParser, uint a_iVar, ref string a_pszName, ref double[] a_pVar);
+
+        /*
+         * Não dá para passar um ref de uma string e nem um array de byte. Tem
+         * que ser a referência para um ponteiro.
+         */
         [DllImport("muParser", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void mupGetConst(IntPtr a_hParser, uint a_iVar, ref string a_pszName, ref double a_pVar);
+        public static extern void mupGetConst(IntPtr a_hParser,
+            uint a_iVar,
+            ref IntPtr a_pszName,
+            ref double a_pVar);
 
         [DllImport("muParser", CallingConvention = CallingConvention.Cdecl)]
         public static extern void mupSetArgSep(IntPtr a_hParser, char cArgSep);
