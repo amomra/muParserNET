@@ -27,14 +27,70 @@ muParser library - Copyright (C) 2013 Ingo Berg
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
 
 namespace muParserNET
 {
-    internal static class MuParserFunctions
+    internal static class MuParserLibrary
     {
+        #region Funções para carregar biblioteca do Windows
+
+        [DllImport("kernel32", CharSet = CharSet.Auto, SetLastError = true)]
+        private static extern IntPtr LoadLibrary(string libname);
+
+        private static void WindowsLoadMuParser()
+        {
+            // pega a pasta atual da biblioteca
+            string libPath = Path.GetDirectoryName(Assembly.GetAssembly(typeof(MuParserLibrary)).Location);
+
+            // verifica se o processo atual é 32 ou 64 bits
+            if (Environment.Is64BitProcess)
+            {
+                // adiciona o x64 no caminho
+                libPath += Path.DirectorySeparatorChar + @"x64" + Path.DirectorySeparatorChar;
+            }
+            else
+            {
+                // adiciona o x86 no caminho
+                libPath += Path.DirectorySeparatorChar + @"x86" + Path.DirectorySeparatorChar;
+            }
+
+            /*
+             * Como é Windows, então é só adicionar o .dll na biblioteca.
+             */
+            libPath += @"muParser.dll";
+
+            // carrega a biblioteca
+            MuParserLibrary.LoadLibrary(libPath);
+        }
+
+        #endregion
+
+        // o constructor será executado quando for feita a chamada de alguma
+        // função da classe
+        static MuParserLibrary()
+        {
+            // verifica o sistema operacional para verificar quais funções serão chamadas
+            switch(Environment.OSVersion.Platform)
+            {
+                // se for windows
+                case PlatformID.Win32S:
+                case PlatformID.Win32Windows:
+                case PlatformID.Win32NT:
+                    MuParserLibrary.WindowsLoadMuParser();
+                    break;
+            }
+
+            /*
+             * Caso o SO atual não seja um dos suportados deixa que o .NET
+             * carregue a biblioteca correta.
+             */
+        }
+
         /*
          * As funções que retornam string fazem com que o .NET tente liberar o
          * endereço de memória.

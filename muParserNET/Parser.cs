@@ -83,11 +83,11 @@ namespace muParserNET
         {
             get
             {
-                return Marshal.PtrToStringAnsi(MuParserFunctions.mupGetExpr(this.parserHandler));
+                return Marshal.PtrToStringAnsi(MuParserLibrary.mupGetExpr(this.parserHandler));
             }
             set
             {
-                MuParserFunctions.mupSetExpr(this.parserHandler, value);
+                MuParserLibrary.mupSetExpr(this.parserHandler, value);
             }
         }
 
@@ -104,11 +104,11 @@ namespace muParserNET
                 // checa se a biblioteca do muParser é compatível
                 this.CheckLibraryVersion();
 
-                return Marshal.PtrToStringAnsi(MuParserFunctions.mupValidNameChars(this.parserHandler));
+                return Marshal.PtrToStringAnsi(MuParserLibrary.mupValidNameChars(this.parserHandler));
             }
             set
             {
-                MuParserFunctions.mupDefineNameChars(this.parserHandler, value);
+                MuParserLibrary.mupDefineNameChars(this.parserHandler, value);
             }
         }
 
@@ -125,11 +125,11 @@ namespace muParserNET
                 // checa se a biblioteca do muParser é compatível
                 this.CheckLibraryVersion();
 
-                return Marshal.PtrToStringAnsi(MuParserFunctions.mupValidOprtChars(this.parserHandler));
+                return Marshal.PtrToStringAnsi(MuParserLibrary.mupValidOprtChars(this.parserHandler));
             }
             set
             {
-                MuParserFunctions.mupDefineOprtChars(this.parserHandler, value);
+                MuParserLibrary.mupDefineOprtChars(this.parserHandler, value);
             }
         }
 
@@ -146,11 +146,11 @@ namespace muParserNET
                 // checa se a biblioteca do muParser é compatível
                 this.CheckLibraryVersion();
 
-                return Marshal.PtrToStringAnsi(MuParserFunctions.mupValidInfixOprtChars(this.parserHandler));
+                return Marshal.PtrToStringAnsi(MuParserLibrary.mupValidInfixOprtChars(this.parserHandler));
             }
             set
             {
-                MuParserFunctions.mupDefineInfixOprtChars(this.parserHandler, value);
+                MuParserLibrary.mupDefineInfixOprtChars(this.parserHandler, value);
             }
         }
 
@@ -179,12 +179,12 @@ namespace muParserNET
                 // lista de consts
                 var consts = new Dictionary<string, double>();
 
-                int numConsts = MuParserFunctions.mupGetConstNum(this.parserHandler);
+                int numConsts = MuParserLibrary.mupGetConstNum(this.parserHandler);
                 for (int i = 0; i < numConsts; i++)
                 {
                     string constName = "";
                     double value = 0.0;
-                    MuParserFunctions.mupGetConst(this.parserHandler, (uint)i, ref constName, ref value);
+                    MuParserLibrary.mupGetConst(this.parserHandler, (uint)i, ref constName, ref value);
 
                     consts[constName] = value;
                 }
@@ -247,7 +247,7 @@ namespace muParserNET
         public Parser()
         {
             // inicializa o parser
-            this.parserHandler = MuParserFunctions.mupCreate(0);
+            this.parserHandler = MuParserLibrary.mupCreate(0);
 
             // inicializa o dicionário com as variáveis
             this.vars = new Dictionary<string, ParserVariable>();
@@ -261,7 +261,7 @@ namespace muParserNET
             this.oprtCallbacks = new Dictionary<string, ParserCallback>();
 
             // ajusta a função de tratamento de erros
-            MuParserFunctions.mupSetErrorHandler(this.parserHandler, this.ErrorHandler);
+            MuParserLibrary.mupSetErrorHandler(this.parserHandler, this.ErrorHandler);
         }
 
         /// <summary>
@@ -270,7 +270,7 @@ namespace muParserNET
         ~Parser()
         {
             // finaliza o parser
-            MuParserFunctions.mupRelease(this.parserHandler);
+            MuParserLibrary.mupRelease(this.parserHandler);
         }
 
         /// <summary>
@@ -289,14 +289,14 @@ namespace muParserNET
         /// </summary>
         private void ErrorHandler()
         {
-            IntPtr ptrMessage = MuParserFunctions.mupGetErrorMsg(this.parserHandler);
-            IntPtr ptrToken = MuParserFunctions.mupGetErrorToken(this.parserHandler);
+            IntPtr ptrMessage = MuParserLibrary.mupGetErrorMsg(this.parserHandler);
+            IntPtr ptrToken = MuParserLibrary.mupGetErrorToken(this.parserHandler);
 
             string message = Marshal.PtrToStringAnsi(ptrMessage);
             string expr = this.Expr;
             string token = Marshal.PtrToStringAnsi(ptrToken);
-            ErrorCodes code = (ErrorCodes)MuParserFunctions.mupGetErrorCode(this.parserHandler);
-            int pos = MuParserFunctions.mupGetErrorPos(this.parserHandler);
+            ErrorCodes code = (ErrorCodes)MuParserLibrary.mupGetErrorCode(this.parserHandler);
+            int pos = MuParserLibrary.mupGetErrorPos(this.parserHandler);
 
             // lança a exceção
             throw new ParserError(message, expr, token, pos, code);
@@ -311,7 +311,7 @@ namespace muParserNET
         /// will not work</returns>
         public string GetVersion()
         {
-            IntPtr ptrVersion = MuParserFunctions.mupGetVersion(this.parserHandler);
+            IntPtr ptrVersion = MuParserLibrary.mupGetVersion(this.parserHandler);
             return Marshal.PtrToStringAnsi(ptrVersion);
         }
 
@@ -328,7 +328,7 @@ namespace muParserNET
 			ParserVariable parserVar = new ParserVariable(name, var);
 
 			// ajusta a variável
-            MuParserFunctions.mupDefineVar(this.parserHandler, name, parserVar.Pointer);
+            MuParserLibrary.mupDefineVar(this.parserHandler, name, parserVar.Pointer);
 
 			// adiciona a variável na lista de variáveis
 			this.vars[name] = parserVar;
@@ -349,7 +349,7 @@ namespace muParserNET
             ParserVariable parserVar = new ParserVariable(name, var);
 
             // ajusta a variável
-            MuParserFunctions.mupDefineVar(this.parserHandler, name, parserVar.Pointer);
+            MuParserLibrary.mupDefineVar(this.parserHandler, name, parserVar.Pointer);
 
             // adiciona a variável na lista de variáveis
             this.vars[name] = parserVar;
@@ -364,7 +364,7 @@ namespace muParserNET
         public void RemoveVar(string name)
         {
             // remove a variável
-            MuParserFunctions.mupRemoveVar(this.parserHandler, name);
+            MuParserLibrary.mupRemoveVar(this.parserHandler, name);
 
             // e remove a variável da lista interna
             this.vars.Remove(name);
@@ -376,7 +376,7 @@ namespace muParserNET
         public void ClearVar()
         {
             // remove todas as variáveis
-            MuParserFunctions.mupClearVar(this.parserHandler);
+            MuParserLibrary.mupClearVar(this.parserHandler);
             this.vars.Clear();
         }
 
@@ -388,7 +388,7 @@ namespace muParserNET
         /// <exception cref="ParserError">Throws if the name contains invalid signs</exception>
         public void DefineConst(string name, double value)
         {
-            MuParserFunctions.mupDefineConst(this.parserHandler, name, value);
+            MuParserLibrary.mupDefineConst(this.parserHandler, name, value);
         }
 
         /// <summary>
@@ -399,7 +399,7 @@ namespace muParserNET
         /// <exception cref="ParserError">Throws if the name contains invalid signs</exception>
         public void DefineStrConst(string name, string value)
         {
-            MuParserFunctions.mupDefineStrConst(this.parserHandler, name, value);
+            MuParserLibrary.mupDefineStrConst(this.parserHandler, name, value);
         }
 
         /// <summary>
@@ -407,7 +407,7 @@ namespace muParserNET
         /// </summary>
         void ClearConst()
         {
-            MuParserFunctions.mupClearConst(this.parserHandler);
+            MuParserLibrary.mupClearConst(this.parserHandler);
         }
 
         /// <summary>
@@ -423,7 +423,7 @@ namespace muParserNET
             ParserCallback callback = new ParserCallback(identFunction);
 
             // passa a chamada
-            MuParserFunctions.mupAddValIdent(this.parserHandler, identFunction);
+            MuParserLibrary.mupAddValIdent(this.parserHandler, identFunction);
 
             this.identFunctionsCallbacks.Add(callback);
         }
@@ -441,7 +441,7 @@ namespace muParserNET
             ParserCallback callback = new ParserCallback(func);
 
             // adiciona no muParser
-            MuParserFunctions.mupDefineFun0(this.parserHandler, name, func, allowOpt);
+            MuParserLibrary.mupDefineFun0(this.parserHandler, name, func, allowOpt);
 
             this.funcCallbacks.Add(name, callback);
         }
@@ -459,7 +459,7 @@ namespace muParserNET
             ParserCallback callback = new ParserCallback(func);
 
             // adiciona no muParser
-            MuParserFunctions.mupDefineFun1(this.parserHandler, name, func, allowOpt);
+            MuParserLibrary.mupDefineFun1(this.parserHandler, name, func, allowOpt);
 
             this.funcCallbacks.Add(name, callback);
         }
@@ -477,7 +477,7 @@ namespace muParserNET
             ParserCallback callback = new ParserCallback(func);
 
             // adiciona no muParser
-            MuParserFunctions.mupDefineFun2(this.parserHandler, name, func, allowOpt);
+            MuParserLibrary.mupDefineFun2(this.parserHandler, name, func, allowOpt);
 
             this.funcCallbacks.Add(name, callback);
         }
@@ -495,7 +495,7 @@ namespace muParserNET
             ParserCallback callback = new ParserCallback(func);
 
             // adiciona no muParser
-            MuParserFunctions.mupDefineFun3(this.parserHandler, name, func, allowOpt);
+            MuParserLibrary.mupDefineFun3(this.parserHandler, name, func, allowOpt);
 
             this.funcCallbacks.Add(name, callback);
         }
@@ -513,7 +513,7 @@ namespace muParserNET
             ParserCallback callback = new ParserCallback(func);
 
             // adiciona no muParser
-            MuParserFunctions.mupDefineFun4(this.parserHandler, name, func, allowOpt);
+            MuParserLibrary.mupDefineFun4(this.parserHandler, name, func, allowOpt);
 
             this.funcCallbacks.Add(name, callback);
         }
@@ -531,7 +531,7 @@ namespace muParserNET
             ParserCallback callback = new ParserCallback(func);
 
             // adiciona no muParser
-            MuParserFunctions.mupDefineFun5(this.parserHandler, name, func, allowOpt);
+            MuParserLibrary.mupDefineFun5(this.parserHandler, name, func, allowOpt);
 
             this.funcCallbacks.Add(name, callback);
         }
@@ -549,7 +549,7 @@ namespace muParserNET
             ParserCallback callback = new ParserCallback(func);
 
             // adiciona no muParser
-            MuParserFunctions.mupDefineFun6(this.parserHandler, name, func, allowOpt);
+            MuParserLibrary.mupDefineFun6(this.parserHandler, name, func, allowOpt);
 
             this.funcCallbacks.Add(name, callback);
         }
@@ -567,7 +567,7 @@ namespace muParserNET
             ParserCallback callback = new ParserCallback(func);
 
             // adiciona no muParser
-            MuParserFunctions.mupDefineFun7(this.parserHandler, name, func, allowOpt);
+            MuParserLibrary.mupDefineFun7(this.parserHandler, name, func, allowOpt);
 
             this.funcCallbacks.Add(name, callback);
         }
@@ -585,7 +585,7 @@ namespace muParserNET
             ParserCallback callback = new ParserCallback(func);
 
             // adiciona no muParser
-            MuParserFunctions.mupDefineFun8(this.parserHandler, name, func, allowOpt);
+            MuParserLibrary.mupDefineFun8(this.parserHandler, name, func, allowOpt);
 
             this.funcCallbacks.Add(name, callback);
         }
@@ -603,7 +603,7 @@ namespace muParserNET
             ParserCallback callback = new ParserCallback(func);
 
             // adiciona no muParser
-            MuParserFunctions.mupDefineFun9(this.parserHandler, name, func, allowOpt);
+            MuParserLibrary.mupDefineFun9(this.parserHandler, name, func, allowOpt);
 
             this.funcCallbacks.Add(name, callback);
         }
@@ -621,7 +621,7 @@ namespace muParserNET
             ParserCallback callback = new ParserCallback(func);
 
             // adiciona no muParser
-            MuParserFunctions.mupDefineFun10(this.parserHandler, name, func, allowOpt);
+            MuParserLibrary.mupDefineFun10(this.parserHandler, name, func, allowOpt);
 
             this.funcCallbacks.Add(name, callback);
         }
@@ -639,7 +639,7 @@ namespace muParserNET
             ParserCallback callback = new ParserCallback(func);
 
             // adiciona no muParser
-            MuParserFunctions.mupDefineBulkFun0(this.parserHandler, name, func);
+            MuParserLibrary.mupDefineBulkFun0(this.parserHandler, name, func);
 
             this.funcCallbacks.Add(name, callback);
         }
@@ -656,7 +656,7 @@ namespace muParserNET
             ParserCallback callback = new ParserCallback(func);
 
             // adiciona no muParser
-            MuParserFunctions.mupDefineBulkFun1(this.parserHandler, name, func);
+            MuParserLibrary.mupDefineBulkFun1(this.parserHandler, name, func);
 
             this.funcCallbacks.Add(name, callback);
         }
@@ -673,7 +673,7 @@ namespace muParserNET
             ParserCallback callback = new ParserCallback(func);
 
             // adiciona no muParser
-            MuParserFunctions.mupDefineBulkFun2(this.parserHandler, name, func);
+            MuParserLibrary.mupDefineBulkFun2(this.parserHandler, name, func);
 
             this.funcCallbacks.Add(name, callback);
         }
@@ -690,7 +690,7 @@ namespace muParserNET
             ParserCallback callback = new ParserCallback(func);
 
             // adiciona no muParser
-            MuParserFunctions.mupDefineBulkFun3(this.parserHandler, name, func);
+            MuParserLibrary.mupDefineBulkFun3(this.parserHandler, name, func);
 
             this.funcCallbacks.Add(name, callback);
         }
@@ -707,7 +707,7 @@ namespace muParserNET
             ParserCallback callback = new ParserCallback(func);
 
             // adiciona no muParser
-            MuParserFunctions.mupDefineBulkFun4(this.parserHandler, name, func);
+            MuParserLibrary.mupDefineBulkFun4(this.parserHandler, name, func);
 
             this.funcCallbacks.Add(name, callback);
         }
@@ -724,7 +724,7 @@ namespace muParserNET
             ParserCallback callback = new ParserCallback(func);
 
             // adiciona no muParser
-            MuParserFunctions.mupDefineBulkFun5(this.parserHandler, name, func);
+            MuParserLibrary.mupDefineBulkFun5(this.parserHandler, name, func);
 
             this.funcCallbacks.Add(name, callback);
         }
@@ -741,7 +741,7 @@ namespace muParserNET
             ParserCallback callback = new ParserCallback(func);
 
             // adiciona no muParser
-            MuParserFunctions.mupDefineBulkFun6(this.parserHandler, name, func);
+            MuParserLibrary.mupDefineBulkFun6(this.parserHandler, name, func);
 
             this.funcCallbacks.Add(name, callback);
         }
@@ -758,7 +758,7 @@ namespace muParserNET
             ParserCallback callback = new ParserCallback(func);
 
             // adiciona no muParser
-            MuParserFunctions.mupDefineBulkFun7(this.parserHandler, name, func);
+            MuParserLibrary.mupDefineBulkFun7(this.parserHandler, name, func);
 
             this.funcCallbacks.Add(name, callback);
         }
@@ -775,7 +775,7 @@ namespace muParserNET
             ParserCallback callback = new ParserCallback(func);
 
             // adiciona no muParser
-            MuParserFunctions.mupDefineBulkFun8(this.parserHandler, name, func);
+            MuParserLibrary.mupDefineBulkFun8(this.parserHandler, name, func);
 
             this.funcCallbacks.Add(name, callback);
         }
@@ -792,7 +792,7 @@ namespace muParserNET
             ParserCallback callback = new ParserCallback(func);
 
             // adiciona no muParser
-            MuParserFunctions.mupDefineBulkFun9(this.parserHandler, name, func);
+            MuParserLibrary.mupDefineBulkFun9(this.parserHandler, name, func);
 
             this.funcCallbacks.Add(name, callback);
         }
@@ -809,7 +809,7 @@ namespace muParserNET
             ParserCallback callback = new ParserCallback(func);
 
             // adiciona no muParser
-            MuParserFunctions.mupDefineBulkFun10(this.parserHandler, name, func);
+            MuParserLibrary.mupDefineBulkFun10(this.parserHandler, name, func);
 
             this.funcCallbacks.Add(name, callback);
         }
@@ -827,7 +827,7 @@ namespace muParserNET
             ParserCallback callback = new ParserCallback(func);
 
             // adiciona no muParser
-            MuParserFunctions.mupDefineMultFun(this.parserHandler, name, func, allowOpt);
+            MuParserLibrary.mupDefineMultFun(this.parserHandler, name, func, allowOpt);
 
             this.funcCallbacks.Add(name, callback);
         }
@@ -844,7 +844,7 @@ namespace muParserNET
             ParserCallback callback = new ParserCallback(func);
 
             // adiciona no muParser
-            MuParserFunctions.mupDefineStrFun1(this.parserHandler, name, func);
+            MuParserLibrary.mupDefineStrFun1(this.parserHandler, name, func);
 
             this.funcCallbacks.Add(name, callback);
         }
@@ -861,7 +861,7 @@ namespace muParserNET
             ParserCallback callback = new ParserCallback(func);
 
             // adiciona no muParser
-            MuParserFunctions.mupDefineStrFun2(this.parserHandler, name, func);
+            MuParserLibrary.mupDefineStrFun2(this.parserHandler, name, func);
 
             this.funcCallbacks.Add(name, callback);
         }
@@ -878,7 +878,7 @@ namespace muParserNET
             ParserCallback callback = new ParserCallback(func);
 
             // adiciona no muParser
-            MuParserFunctions.mupDefineStrFun3(this.parserHandler, name, func);
+            MuParserLibrary.mupDefineStrFun3(this.parserHandler, name, func);
 
             this.funcCallbacks.Add(name, callback);
         }
@@ -888,7 +888,7 @@ namespace muParserNET
         /// </summary>
         public void ClearFun()
         {
-            MuParserFunctions.mupClearFun(this.parserHandler);
+            MuParserLibrary.mupClearFun(this.parserHandler);
             this.funcCallbacks.Clear();
         }
 
@@ -904,7 +904,7 @@ namespace muParserNET
             // bloqueia o GC de mover o delegate
 			ParserCallback callback = new ParserCallback(func);
 
-            MuParserFunctions.mupDefineInfixOprt(this.parserHandler, identifier, func, allowOpt);
+            MuParserLibrary.mupDefineInfixOprt(this.parserHandler, identifier, func, allowOpt);
 
             this.infixOprtCallbacks.Add(identifier, callback);
         }
@@ -921,7 +921,7 @@ namespace muParserNET
             // bloqueia o GC de mover o delegate
             ParserCallback callback = new ParserCallback(func);
 
-            MuParserFunctions.mupDefinePostfixOprt(this.parserHandler, identifier, func, allowOpt);
+            MuParserLibrary.mupDefinePostfixOprt(this.parserHandler, identifier, func, allowOpt);
 
             this.postfixOprtCallbacks.Add(identifier, callback);
         }
@@ -940,7 +940,7 @@ namespace muParserNET
             // bloqueia o GC de mover o delegate
             ParserCallback callback = new ParserCallback(func);
 
-            MuParserFunctions.mupDefineOprt(this.parserHandler, identifier, func, precedence, (int) associativity, allowOpt);
+            MuParserLibrary.mupDefineOprt(this.parserHandler, identifier, func, precedence, (int) associativity, allowOpt);
 
             this.oprtCallbacks.Add(identifier, callback);
         }
@@ -956,7 +956,7 @@ namespace muParserNET
             // checa se a biblioteca do muParser é compatível
             this.CheckLibraryVersion();
 
-            MuParserFunctions.mupClearInfixOprt(this.parserHandler);
+            MuParserLibrary.mupClearInfixOprt(this.parserHandler);
             this.infixOprtCallbacks.Clear();
         }
 
@@ -971,7 +971,7 @@ namespace muParserNET
             // checa se a biblioteca do muParser é compatível
             this.CheckLibraryVersion();
 
-            MuParserFunctions.mupClearPostfixOprt(this.parserHandler);
+            MuParserLibrary.mupClearPostfixOprt(this.parserHandler);
             this.postfixOprtCallbacks.Clear();
         }
 
@@ -980,7 +980,7 @@ namespace muParserNET
         /// </summary>
         public void CleanOprt()
         {
-            MuParserFunctions.mupClearOprt(this.parserHandler);
+            MuParserLibrary.mupClearOprt(this.parserHandler);
             this.oprtCallbacks.Clear();
         }
 
@@ -999,7 +999,7 @@ namespace muParserNET
             // checa se a biblioteca do muParser é compatível
             this.CheckLibraryVersion();
 
-            MuParserFunctions.mupEnableBuiltInOprt(this.parserHandler, oprtEn);
+            MuParserLibrary.mupEnableBuiltInOprt(this.parserHandler, oprtEn);
         }
 
         /// <summary>
@@ -1014,7 +1014,7 @@ namespace muParserNET
             // checa se a biblioteca do muParser é compatível
             this.CheckLibraryVersion();
 
-            MuParserFunctions.mupEnableOptimizer(this.parserHandler, optmEn);
+            MuParserLibrary.mupEnableOptimizer(this.parserHandler, optmEn);
         }
 
         /// <summary>
@@ -1023,7 +1023,7 @@ namespace muParserNET
         /// <param name="value">The argument separator character</param>
         public void SetArgSep(char value)
         {
-            MuParserFunctions.mupSetArgSep(this.parserHandler, value);
+            MuParserLibrary.mupSetArgSep(this.parserHandler, value);
         }
 
         /// <summary>
@@ -1034,7 +1034,7 @@ namespace muParserNET
         /// <param name="value">The decimal separator character</param>
         public void SetDecSep(char value)
         {
-            MuParserFunctions.mupSetDecSep(this.parserHandler, value);
+            MuParserLibrary.mupSetDecSep(this.parserHandler, value);
         }
 
         /// <summary>
@@ -1045,7 +1045,7 @@ namespace muParserNET
         /// <param name="value">The thousands separator character</param>
         public void SetThousandsSep(char value = '\0')
         {
-            MuParserFunctions.mupSetThousandsSep(this.parserHandler, value);
+            MuParserLibrary.mupSetThousandsSep(this.parserHandler, value);
         }
 
         /// <summary>
@@ -1054,7 +1054,7 @@ namespace muParserNET
         /// </summary>
         public void ResetLocale()
         {
-            MuParserFunctions.mupResetLocale(this.parserHandler);
+            MuParserLibrary.mupResetLocale(this.parserHandler);
         }
 
         //void SetVarFactory(FactoryFunction ^func, Object ^userData){ }
@@ -1066,7 +1066,7 @@ namespace muParserNET
         /// of any other error related to the formula</exception>
         public double Eval()
         {
-            return MuParserFunctions.mupEval(this.parserHandler);
+            return MuParserLibrary.mupEval(this.parserHandler);
         }
 
         /// <summary>
@@ -1087,7 +1087,7 @@ namespace muParserNET
              */
 
 			// executa o comando
-            MuParserFunctions.mupEvalBulk(this.parserHandler, result, bulkSize);
+            MuParserLibrary.mupEvalBulk(this.parserHandler, result, bulkSize);
 
 			return result;
         }
@@ -1107,7 +1107,7 @@ namespace muParserNET
 
             int n = 0;
 
-			IntPtr result = MuParserFunctions.mupEvalMulti(this.parserHandler, ref n);
+			IntPtr result = MuParserLibrary.mupEvalMulti(this.parserHandler, ref n);
 
 			// aloca o array de retorno do .net
 			double[] ret = new double[n];

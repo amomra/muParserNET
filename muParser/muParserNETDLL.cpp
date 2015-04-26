@@ -88,7 +88,7 @@ API_EXPORT(void) mupEnableBuiltInOprt(muParserHandle_t a_hParser, muBool_t a_bOp
 {
 	MU_TRY
 		muParser_t* const p(AsParser(a_hParser));
-		p->EnableBuiltInOprt(a_bOprtEn);
+		p->EnableBuiltInOprt(a_bOprtEn == 1);
 	MU_CATCH
 }
 
@@ -96,7 +96,7 @@ API_EXPORT(void) mupEnableOptimizer(muParserHandle_t a_hParser, muBool_t a_bOptm
 {
 	MU_TRY
 		muParser_t* const p(AsParser(a_hParser));
-		p->EnableOptimizer(a_bOptmEn);
+		p->EnableOptimizer(a_bOptmEn == 1);
 	MU_CATCH
 }
 

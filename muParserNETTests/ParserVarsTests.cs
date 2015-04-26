@@ -38,10 +38,6 @@ namespace muParserNETTests
     [TestFixture]
     public class ParserVarsTests
     {
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <exception cref=""></exception>
         [Test]
         public void TestDefineVar()
         {

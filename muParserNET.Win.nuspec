@@ -15,7 +15,7 @@
 	<files>
 		<file src="Release\muParserNET.dll" target="lib\Net40" />
 		<file src="Release\muParserNET.xml" target="lib\Net40" />
-    <file src="Release\muParser.dll" target="lib\Net40\x86" />
-    <file src="x64\Release\muParser.dll" target="lib\Net40\x64" />
+    <file src="Release\x86\muParser.dll" target="content\x86" />
+    <file src="Release\x64\muParser.dll" target="content\x64" />
 	</files>
 </package>
