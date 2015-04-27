@@ -422,6 +422,9 @@ namespace muParserNET
 
             // chama a função definida
             ParserVariable v = this.factoryFunc(name, u);
+            // lança uma exceção se não for retornada uma variável
+            if (v == null)
+                throw new ParserError("Invalid var object", this.Expr, "", 0, ErrorCodes.INVALID_VAR_PTR);
 
             // adiciona na lista de variáveis
             this.vars[name] = v;
