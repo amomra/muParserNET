@@ -18,12 +18,6 @@ The solution can be also downloaded and compiled with Visual Studio 2013.
 
 ## Documentation ##
 
-The library implements most functionalities of `muParser` class library with little changes in the API.
-
-The library lacks supports for the following functionalities:
-
-- Implicit variable creation.
-
-There may have more features that are not supported.
+The library implements most functionalities of `muParser` class library with little changes in the API. There may have some features that are not supported.
 
 The documentation is available at the project [wiki](https://github.com/amomra/muParserNET/wiki).
