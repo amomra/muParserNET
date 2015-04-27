@@ -98,5 +98,29 @@ namespace muParserNETTests
             // verifica se fez o parser corretamente
             Assert.AreEqual(10.0, res);
         }
+
+        [Test]
+        public void TestSetVarFactory()
+        {
+            // cria o parser
+            Parser parser = new Parser();
+            parser.Expr = "a";
+
+            // adiciona a função de factory
+            parser.SetVarFactory((string name, object userdata) =>
+            {
+                // cria o objeto com o valor passado na função
+                return new ParserVariable(name, (double)userdata);
+            }, 10.0);
+
+            // executa
+            parser.Eval();
+
+            // pega a variável 'a'
+            ParserVariable a = parser.Vars["a"];
+
+            // verifica o valor dela
+            Assert.AreEqual(10.0, a.Value);
+        }
     }
 }

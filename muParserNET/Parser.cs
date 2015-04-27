@@ -44,13 +44,26 @@ namespace muParserNET
     /// of internally implemented functions the parser is able to handle
     /// user defined functions and variables.
     /// </summary>
-    public partial class Parser
+    public class Parser
     {
         // handler para o parser
         private IntPtr parserHandler;
 
+        #region Atributos de apoio as funções das variáveis
+
         // hashmap com as variáveis
         private Dictionary<string, ParserVariable> vars;
+
+        // função de identificação passada pelo usuário
+        private FactoryFunction factoryFunc;
+
+        // objeto da callback passada para a biblioteca do muParser
+        private ParserCallback factoryCallback;
+
+        // ponteiro do objeto passado pelo usuário
+        private GCHandle ptrUserdata;
+
+        #endregion
 
         #region Atributos de apoio as funções de identificação de tokens
 
@@ -269,6 +282,9 @@ namespace muParserNET
             this.postfixOprtCallbacks = new Dictionary<string, ParserCallback>();
             this.oprtCallbacks = new Dictionary<string, ParserCallback>();
 
+            // inicializa o delegate de factory
+            this.factoryCallback = new ParserCallback(new IntFactoryFunction(this.VarFactoryCallback));
+
             // ajusta a função de tratamento de erros
             MuParserLibrary.mupSetErrorHandler(this.parserHandler, this.ErrorHandler);
         }
@@ -387,6 +403,53 @@ namespace muParserNET
             // remove todas as variáveis
             MuParserLibrary.mupClearVar(this.parserHandler);
             this.vars.Clear();
+        }
+
+        /// <summary>
+        /// Internal callback that will call the factory function.
+        /// </summary>
+        /// <param name="name">The new variable name</param>
+        /// <param name="userData">A user defined context object</param>
+        /// <returns>The variable pointer to muParser</returns>
+        private IntPtr VarFactoryCallback(string name, IntPtr userData)
+        {
+            /*
+             * Ignora o userdata da função e pega o objeto pinnado.
+             */
+
+            // pega o objeto
+            object u = this.ptrUserdata.Target;
+
+            // chama a função definida
+            ParserVariable v = this.factoryFunc(name, u);
+
+            // adiciona na lista de variáveis
+            this.vars[name] = v;
+
+            // retorna o ponteiro para esta variável
+            return v.Pointer;
+        }
+
+        /// <summary>
+        /// Set a function that can create variable pointer for unknown expression variables.
+        /// </summary>
+        /// <param name="func">The variable factory function</param>
+        /// <param name="userData">A user defined context object</param>
+        public void SetVarFactory(FactoryFunction func, object userData = null)
+        {
+            // libera o objeto anterior caso estiver alocado
+            if (this.ptrUserdata.IsAllocated)
+                this.ptrUserdata.Free();
+
+            // aloca o objeto do usuário para impedir que ele seja removido
+            if (userData != null)
+                this.ptrUserdata = GCHandle.Alloc(userData, GCHandleType.Pinned);
+
+            // ajusta a função (ignora o último parâmetro já que o objeto do usuário vai estar no parser)
+            MuParserLibrary.mupSetVarFactory(
+                this.parserHandler, (IntFactoryFunction)this.factoryCallback.Function, new IntPtr());
+
+            this.factoryFunc = func;
         }
 
         /// <summary>

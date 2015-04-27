@@ -107,7 +107,11 @@ namespace muParserNET
 
         [DllImport("muParser", CallingConvention = CallingConvention.Cdecl)]
         public static extern void mupSetExpr(IntPtr a_hParser, string a_szExpr);
-        //public static extern void mupSetVarFactory(IntPtr a_hParser, muFacFun a_pFactory, void* pUserData);
+
+        [DllImport("muParser", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void mupSetVarFactory(IntPtr a_hParser,
+            IntFactoryFunction a_pFactory,
+            IntPtr pUserData);
 
         [DllImport("muParser", CallingConvention = CallingConvention.Cdecl)]
         public static extern IntPtr mupGetVersion(IntPtr a_hParser);

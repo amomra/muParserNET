@@ -34,17 +34,38 @@ using System.Threading.Tasks;
 
 namespace muParserNET
 {
+
+    #region Callbacks internas
+
+    /// <summary>
+    /// Internal callback used for variable creation factory functions.
+    /// </summary>
+    /// <param name="name">The name of the created variable</param>
+    /// <param name="userData">The user data object address</param>
+    /// <returns>The variable pointer to muParser</returns>
+    [UnmanagedFunctionPointerAttribute(CallingConvention.Cdecl)]
+    internal delegate IntPtr IntFactoryFunction(string name, IntPtr userData);
+
+    #endregion
+
     /*
      * Definição dos ponteiros para função que serão passado para o muParser.
      */
+
+    /// <summary>
+    /// Callback used for variable creation factory functions.
+    /// </summary>
+    /// <param name="name">The name of the created variable</param>
+    /// <param name="userData">The user data object</param>
+    /// <returns>The parser variable</returns>
+    [UnmanagedFunctionPointerAttribute(CallingConvention.Cdecl)]
+    public delegate ParserVariable FactoryFunction(string name, object userData);
 
     /// <summary>
     /// Callback type used for handle parser errors.
     /// </summary>
     [UnmanagedFunctionPointerAttribute(CallingConvention.Cdecl)]
     public delegate void ErrorFuncType();
-
-    //	delegate ParserVariable ^FactoryFunction(String ^name, Object ^userData);
 
     /// <summary>
     /// Callback type used for functions without arguments.
