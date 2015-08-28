@@ -97,7 +97,7 @@ namespace muParserNET
             }
             set
             {
-                MuParserLibrary.mupSetExpr(this.parserHandler, value);
+                MuParserLibrary.mupSetExpr(this.parserHandler, value ?? string.Empty);
             }
         }
 
@@ -118,7 +118,7 @@ namespace muParserNET
             }
             set
             {
-                MuParserLibrary.mupDefineNameChars(this.parserHandler, value);
+                MuParserLibrary.mupDefineNameChars(this.parserHandler, value ?? string.Empty);
             }
         }
 
@@ -139,7 +139,7 @@ namespace muParserNET
             }
             set
             {
-                MuParserLibrary.mupDefineOprtChars(this.parserHandler, value);
+                MuParserLibrary.mupDefineOprtChars(this.parserHandler, value ?? string.Empty);
             }
         }
 
@@ -160,7 +160,7 @@ namespace muParserNET
             }
             set
             {
-                MuParserLibrary.mupDefineInfixOprtChars(this.parserHandler, value);
+                MuParserLibrary.mupDefineInfixOprtChars(this.parserHandler, value ?? string.Empty);
             }
         }
 
