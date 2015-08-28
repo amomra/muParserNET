@@ -27,10 +27,7 @@ muParser library - Copyright (C) 2013 Ingo Berg
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace muParserNET
 {
@@ -100,7 +97,7 @@ namespace muParserNET
             }
             set
             {
-                MuParserLibrary.mupSetExpr(this.parserHandler, value);
+                MuParserLibrary.mupSetExpr(this.parserHandler, value ?? string.Empty);
             }
         }
 
@@ -121,7 +118,7 @@ namespace muParserNET
             }
             set
             {
-                MuParserLibrary.mupDefineNameChars(this.parserHandler, value);
+                MuParserLibrary.mupDefineNameChars(this.parserHandler, value ?? string.Empty);
             }
         }
 
@@ -142,7 +139,7 @@ namespace muParserNET
             }
             set
             {
-                MuParserLibrary.mupDefineOprtChars(this.parserHandler, value);
+                MuParserLibrary.mupDefineOprtChars(this.parserHandler, value ?? string.Empty);
             }
         }
 
@@ -163,7 +160,7 @@ namespace muParserNET
             }
             set
             {
-                MuParserLibrary.mupDefineInfixOprtChars(this.parserHandler, value);
+                MuParserLibrary.mupDefineInfixOprtChars(this.parserHandler, value ?? string.Empty);
             }
         }
 
@@ -315,11 +312,12 @@ namespace muParserNET
         private void ErrorHandler()
         {
             IntPtr ptrMessage = MuParserLibrary.mupGetErrorMsg(this.parserHandler);
-            IntPtr ptrToken = MuParserLibrary.mupGetErrorToken(this.parserHandler);
-
             string message = Marshal.PtrToStringAnsi(ptrMessage);
-            string expr = this.Expr;
+
+            IntPtr ptrToken = MuParserLibrary.mupGetErrorToken(this.parserHandler);
             string token = Marshal.PtrToStringAnsi(ptrToken);
+
+            string expr = this.Expr;
             ErrorCodes code = (ErrorCodes)MuParserLibrary.mupGetErrorCode(this.parserHandler);
             int pos = MuParserLibrary.mupGetErrorPos(this.parserHandler);
 

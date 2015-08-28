@@ -25,11 +25,6 @@ This software uses and contains parts copied from muParser library.
 muParser library - Copyright (C) 2013 Ingo Berg
 */
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
 namespace muParserNET
 {
     /// <summary>

@@ -26,12 +26,9 @@ muParser library - Copyright (C) 2013 Ingo Berg
 */
 
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
-using System.Text;
 
 namespace muParserNET
 {
