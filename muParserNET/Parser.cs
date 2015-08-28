@@ -312,11 +312,12 @@ namespace muParserNET
         private void ErrorHandler()
         {
             IntPtr ptrMessage = MuParserLibrary.mupGetErrorMsg(this.parserHandler);
-            IntPtr ptrToken = MuParserLibrary.mupGetErrorToken(this.parserHandler);
-
             string message = Marshal.PtrToStringAnsi(ptrMessage);
-            string expr = this.Expr;
+
+            IntPtr ptrToken = MuParserLibrary.mupGetErrorToken(this.parserHandler);
             string token = Marshal.PtrToStringAnsi(ptrToken);
+
+            string expr = this.Expr;
             ErrorCodes code = (ErrorCodes)MuParserLibrary.mupGetErrorCode(this.parserHandler);
             int pos = MuParserLibrary.mupGetErrorPos(this.parserHandler);
 
