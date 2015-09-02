@@ -134,7 +134,21 @@ namespace muParserNET
         public ParserVariable(string name, double[] valueArray)
         {
             this.name = name;
-            this.valueArray = valueArray;
+
+            /*
+             * Verifica se o valor do array é diferente de nulo antes de
+             * ajustar a lista de valores.
+             */
+            if (valueArray != null)
+            {
+                this.valueArray = valueArray;
+            }
+            else
+            {
+                // cria um vetor com uma posição apenas
+                this.valueArray = new double[1];
+                this.valueArray[0] = 0.0;
+            }
 
             // evita que o objeto do array seja movido
             this.ptrValueArray = GCHandle.Alloc(this.valueArray, GCHandleType.Pinned);
