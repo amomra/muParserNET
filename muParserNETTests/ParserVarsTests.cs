@@ -99,7 +99,7 @@ namespace muParserNETTests
         {
             // cria o parser
             Parser parser = new Parser();
-            parser.Expr = "a";
+            parser.Expr = "a = 5, a = a * 2";
 
             // adiciona a função de factory
             parser.SetVarFactory((string name, object userdata) =>

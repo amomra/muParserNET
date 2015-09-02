@@ -416,7 +416,10 @@ namespace muParserNET
              */
 
             // pega o objeto
-            object u = this.ptrUserdata.Target;
+            object u = null;
+            // ajusta apenas se o ponteiro estiver alocado
+            if (this.ptrUserdata.IsAllocated)
+                u = this.ptrUserdata.Target;
 
             // chama a função definida
             ParserVariable v = this.factoryFunc(name, u);
