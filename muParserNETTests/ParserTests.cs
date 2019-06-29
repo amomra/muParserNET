@@ -67,6 +67,37 @@ namespace muParserNETTests
         }
 
         [Test]
+        public void TestParserErrorGarbageCollector()
+        {
+            try
+            {
+                // cria o parser e força o GC para ver se o delegate da callback de erro foi desalocado
+                Parser parser = new Parser();
+                parser.Expr = "aaaaaaaaasdasd;~";
+
+                // força o GC
+                GC.Collect();
+                GC.WaitForPendingFinalizers();
+
+                // causa o erro
+                parser.Eval();
+
+                // se passou para cá significa que não ocorreu erro de parser
+                Assert.Fail();
+            }
+            catch (ParserError e)
+            {
+                // significa que capturou a exceção correta
+                Console.WriteLine(e.Message);
+            }
+            catch (Exception)
+            {
+                // se veio uma exceção genérica é porque o teste falhou
+                Assert.Fail();
+            }
+        }
+
+        [Test]
         public void TestEval()
         {
             // cria o parser e tenta ajustar a expressão

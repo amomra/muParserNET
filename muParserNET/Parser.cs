@@ -57,6 +57,9 @@ namespace muParserNET
         // objeto da callback passada para a biblioteca do muParser
         private ParserCallback factoryCallback;
 
+        // objeto da callback de erro
+        private ParserCallback errorCallback;
+
         // ponteiro do objeto passado pelo usuário
         private GCHandle ptrUserdata;
 
@@ -282,8 +285,11 @@ namespace muParserNET
             // inicializa o delegate de factory
             this.factoryCallback = new ParserCallback(new IntFactoryFunction(this.VarFactoryCallback));
 
-            // ajusta a função de tratamento de erros
-            MuParserLibrary.mupSetErrorHandler(this.parserHandler, this.ErrorHandler);
+            // inicializa o delegate de erro para evitar que o delegate seja GCed
+            this.errorCallback = new ParserCallback(new ErrorFuncType(this.ErrorHandler));
+
+            // ajusta a função de tratamento de erros passando a callback
+            MuParserLibrary.mupSetErrorHandler(this.parserHandler, (ErrorFuncType)this.errorCallback.Function);
         }
 
         /// <summary>
