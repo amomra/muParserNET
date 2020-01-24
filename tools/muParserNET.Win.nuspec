@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata>
     <id>muParserNET.Win</id>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
     <title>muParserNET (Windows 32 and 64 bits)</title>
     <authors>Luiz Carlos Viana Melo</authors>
     <licenseUrl>https://github.com/amomra/muParserNET/blob/v1.0/LICENSE.md</licenseUrl>
